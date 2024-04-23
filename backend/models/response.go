@@ -8,3 +8,11 @@ type JSONCard struct {
 	Description    string `json:"desc"`
 	ImageName      string `json:"image_file_name"`
 }
+
+
+type AIResponse struct {
+	Response string `json:"response"`
+}
+type JSONAIResponse struct {
+	JSONResponse string `json:"JSONresponse"`
+}
