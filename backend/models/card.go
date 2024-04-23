@@ -1,10 +1,10 @@
 package models
 
 type Card struct {
-	CardName       string
-	Type           string
-	MeaningUp      string
-	MeaningReverse string
-	Description    string
-	ShortName      string
+	CardName       string `json:"name"`
+	Type           string `json:"type"`
+	MeaningUp      string `json:"meaning_up"`
+	MeaningReverse string `json:"meaning_rev"`
+	Description    string `json:"desc"`
+	ShortName      string `json:"name_short"`
 }

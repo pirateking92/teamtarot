@@ -1,10 +1,10 @@
 package models
 
 type JSONCard struct {
-	CardName       string // API
-	Type           string // API
-	MeaningUp      string // API
-	MeaningReverse string // API
-	Description    string // API
-	ImageName      string // taken from name_short (API)
+	CardName       string `json:"name"`
+	Type           string `json:"type"`
+	MeaningUp      string `json:"meaning_up"`
+	MeaningReverse string `json:"meaning_rev"`
+	Description    string `json:"desc"`
+	ImageName      string `json:"image_file_name"`
 }
