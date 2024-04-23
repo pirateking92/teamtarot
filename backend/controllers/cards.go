@@ -10,7 +10,7 @@ import (
 )
 
 func GetThreeCards(ctx *gin.Context) {
-	deck, _ := services.GetAllCards() //returns a type of []Card
+	deck := services.GetAllCards() //returns a type of []Card
 	// if err != nil {
 	// 	SendInternalError(ctx, err)
 	// 	return
@@ -35,7 +35,6 @@ func GetThreeCards(ctx *gin.Context) {
 			ImageName:      card.ShortName + ".png",
 		})
 	}
-
 	ctx.JSON(http.StatusOK, gin.H{"cards": jsonCards})
 }
 
