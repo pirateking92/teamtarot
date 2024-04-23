@@ -41,7 +41,21 @@ func GetThreeCards(ctx *gin.Context) {
 
 func GetRandomCard(deck []models.Card, currentCards []models.Card) models.Card {
 	randomiser := rand.New(rand.NewSource(time.Now().UnixNano()))
-	randomIndex := randomiser.Intn(len(deck))
-	randomCard := deck[randomIndex]
-	return randomCard
+
+	for {
+		randomIndex := randomiser.Intn(len(deck))
+		randomCard := deck[randomIndex]
+
+		isDuplicate := false
+		for _, card := range currentCards {
+			if card.CardName == randomCard.CardName {
+				isDuplicate = true
+				break
+			}
+		}
+
+		if !isDuplicate {
+			return randomCard
+		}
+	}
 }
