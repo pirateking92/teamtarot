@@ -10,7 +10,7 @@ import (
 )
 
 func GetThreeCards(ctx *gin.Context) {
-	deck, _ := services.GetAllCards() //returns a type of []Card
+	deck, _ := services.FetchTarotCards() //returns a type of []Card
 	// if err != nil {
 	// 	SendInternalError(ctx, err)
 	// 	return
@@ -32,7 +32,7 @@ func GetThreeCards(ctx *gin.Context) {
 			MeaningUp:      card.MeaningUp,
 			MeaningReverse: card.MeaningReverse,
 			Description:    card.Description,
-			ImageName:      card.ShortName + ".png",
+			ImageName:      card.ShortName + ".jpg",
 		})
 	}
 
