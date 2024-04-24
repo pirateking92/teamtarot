@@ -37,7 +37,13 @@ func GetThreeCards(ctx *gin.Context) {
 		})
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{"cards": jsonCards})
+	var cardNames []string
+	for _, card := range threeCards {
+		cardNames = append(cardNames, card.CardName)
+	}
+
+	interpret, _ := services.InterpretTarotCards("sk-proj-xxg71fBX7UwL5XI3JPeQT3BlbkFJs4TMMqsxh8odON7eCkXQ", cardNames)
+	ctx.JSON(http.StatusOK, gin.H{"cards": jsonCards, "interpret": interpret})
 }
 
 func GetRandomCard(deck []models.Card, currentCards []models.Card) models.Card {
