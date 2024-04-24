@@ -4,6 +4,8 @@ Tried to change routes and get a response, but didnt get very far.
 Perhaps some changes to the routes? Tried getting responses from the backend but couldnt.
 Code has been changed in routes package, some added to main
 -->
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
 <script>
   import { onMount } from "svelte";
 
@@ -13,7 +15,7 @@ Code has been changed in routes package, some added to main
 
   onMount(async () => {
     try {
-      const res = await fetch("/card_display");
+      const res = await fetch("http://localhost:8082/cards");
       console.log("Response Status:", res.status); // test 1
       console.log("Response Headers:", res.headers); // test 2
       const data = await res.text(); //changed from res.json()
@@ -27,26 +29,27 @@ Code has been changed in routes package, some added to main
     }
   });
 </script>
+<div class="container mx-auto mt-8">
+  <h1 class="text-4xl font-bold mb-4">Arcana Tarot Card Reading</h1>
 
-<h1>Arcana</h1>
-<!-- this subsequent code is what shows the data once it is properly parsed -->
-{#if isLoading}
-  <p>Loading...</p>
-{:else if error}
-  <p>Error: {error}</p>
-{:else}
-  <ul>
-    {#each threeCards as card}
-      <li>
-        <h2>{card.cardName}</h2>
-        <img src="/images/{card.imageName}" alt={card.cardName} />
-        <p>Type: {card.type}</p>
-        <p>Meaning Upright: {card.meaningUp}</p>
-        <p>Meaning Reversed: {card.meaningReverse}</p>
-        <p>{card.description}</p>
-      </li>
-    {/each}
-  </ul>
-{/if}
+  {#if isLoading}
+    <p>Loading...</p>
+  {:else if error}
+    <p class="text-red-500">Error: {error}</p>
+  {:else}
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      {#each threeCards as card}
+        <div class="bg-white shadow-md p-4 rounded-lg">
+          <h2 class="text-xl font-semibold mb-2">{card.name}</h2>
+          <img src={`src/lib/assets/${card.image_file_name}`} alt="{card.name}" class="mb-2 rounded-lg">
+          <p class="text-gray-600 mb-2">Type: {card.type}</p>
+          <p class="text-gray-600 mb-2">Meaning Upright: {card.meaning_up}</p>
+          <p class="text-gray-600 mb-2">Meaning Reversed: {card.meaning_rev}</p>
+          <p class="text-gray-600">{card.desc}</p>
+        </div>
+      {/each}
+    </div>
+  {/if}
 
-<h2>Lol just kiddin hun, tarot costs extra xxx</h2>
+  <p class="mt-8 text-gray-500">Lol just kiddin hun, tarot costs extra xxx</p>
+</div>
