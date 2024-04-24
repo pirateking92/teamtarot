@@ -3,7 +3,7 @@
 Welcome to the README for Team Tarot, you're new favourite fortune teller
 
 This repo contains the codebase for the Tarot Card Reading 
-Application made by Team Tarot (Allanah Lawlor, Josh Day, Fara Ifaturoti, Oli Kelly,
+Application made by Team Tarot (Alannah Lawlor, Josh Day, Fara Ifaturoti, Oli Kelly,
 Giandomenico Loparco and Matt Doyle).
 
 ## Table of Contents

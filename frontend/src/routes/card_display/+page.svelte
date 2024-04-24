@@ -38,14 +38,25 @@ Code has been changed in routes package, some added to main
     <p class="text-red-500">Error: {error}</p>
   {:else}
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-      {#each threeCards as card}
+      {#each threeCards as card, index}
         <div class="bg-white shadow-md p-4 rounded-lg">
+          <h2 class="text-xl font-semibold mb-2">
+            {#if index === 0}
+              <span>Past</span>
+            {:else if index === threeCards.length - 1}
+              <span>Future</span>
+            {:else}
+              <span>Present</span>
+            {/if}
+            <!-- {card.name} -->
+          </h2>
+          
           <h2 class="text-xl font-semibold mb-2">{card.name}</h2>
           <img src={`src/lib/assets/${card.image_file_name}`} alt="{card.name}" class="mb-2 rounded-lg">
           <p class="text-gray-600 mb-2">Type: {card.type}</p>
           <p class="text-gray-600 mb-2">Meaning Upright: {card.meaning_up}</p>
           <p class="text-gray-600 mb-2">Meaning Reversed: {card.meaning_rev}</p>
-          <p class="text-gray-600">{card.desc}</p>
+          <!-- <p class="text-gray-600">{card.desc}</p> -->
         </div>
       {/each}
     </div>
