@@ -4,7 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"io/ioutil"
+
+	//"io/ioutil"
 	"net/http"
 	"strings"
 
@@ -37,30 +38,26 @@ func FetchTarotCards() ([]models.Card, error) {
 
 // InterpretTarotCards interprets tarot cards using the OpenAI API
 func InterpretTarotCards(apiKey string, cards []string) (string, error) {
-	// Set up the HTTP client
 	client := &http.Client{}
 
-	// Create a JSON payload for the request
-	prompt := fmt.Sprintf("You drew %s, %s, and %s. Please interpret these cards.", cards[0], cards[1], cards[2])
-	payload := fmt.Sprintf(`{"model": "gpt-3.5-turbo-instruct", "prompt": "%s", "max_tokens": 100}`, prompt)
+	userStory := "I've just started a new job and I don't know if it was the right decision."
+	prompt := fmt.Sprintf("I'm doing a tarot card reading. They drew %s, %s, and %s. Please interpret these cards in relation to their story: '%s'. Please format your response in the style of a tarot card reader, and keep your response lower than 200 words", cards[0], cards[1], cards[2], userStory)
+	payload := fmt.Sprintf(`{"model": "gpt-3.5-turbo-instruct", "prompt": "%s", "max_tokens": 400}`, prompt)
 
-	// Create a request object
 	req, err := http.NewRequest("POST", "https://api.openai.com/v1/completions", strings.NewReader(payload))
 	if err != nil {
 		return "", fmt.Errorf("error creating request: %v", err)
 	}
 
-	// Set the API key in the request headers
 	req.Header.Set("Authorization", "Bearer "+apiKey)
+	req.Header.Set("Content-Type", "application/json")
 
-	// Send the request
 	resp, err := client.Do(req)
 	if err != nil {
 		return "", fmt.Errorf("error sending request: %v", err)
 	}
 	defer resp.Body.Close()
 
-	// Read and process the response
 	var responseBody strings.Builder
 	if _, err := io.Copy(&responseBody, resp.Body); err != nil {
 		return "", fmt.Errorf("error reading response body: %v", err)
@@ -69,39 +66,4 @@ func InterpretTarotCards(apiKey string, cards []string) (string, error) {
 	fmt.Println(resp.StatusCode)
 
 	return responseBody.String(), nil
-}
-
-func SeeModels() {
-	apiKey := "sk-proj-xxg71fBX7UwL5XI3JPeQT3BlbkFJs4TMMqsxh8odON7eCkXQ"
-
-	// Create a new HTTP client
-	client := &http.Client{}
-
-	// Create a GET request to the /v1/engines endpoint
-	req, err := http.NewRequest("GET", "https://api.openai.com/v1/engines", nil)
-	if err != nil {
-		fmt.Printf("Error creating request: %v\n", err)
-		return
-	}
-
-	// Set the API key in the request headers
-	req.Header.Set("Authorization", "Bearer "+apiKey)
-
-	// Send the request
-	resp, err := client.Do(req)
-	if err != nil {
-		fmt.Printf("Error sending request: %v\n", err)
-		return
-	}
-	defer resp.Body.Close()
-
-	// Read and parse the response body
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		fmt.Printf("Error reading response body: %v\n", err)
-		return
-	}
-
-	// Print the response body (list of available engines/models)
-	fmt.Println(string(body))
 }

@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	"main.go/env"
 	"main.go/routes"
 )
 
@@ -11,6 +12,7 @@ func main() {
 
 	// if the above line is not called in main.go the App will always run in debug mode
 	// and detailed errors will be shown to the user.
+	env.LoadEnv()
 	app := setupApp()
 	app.Run(":8082")
 }
