@@ -5,6 +5,23 @@
     window.location.href = "/";
   }
 
+  async function getFate() {
+    try {
+      const res = await fetch("http://localhost:8082/interpret-");
+      console.log("Response Status:", res.status); // test 1
+      console.log("Response Headers:", res.headers); // test 2
+      const data = await res.text(); //changed from res.json()
+      console.log("Response Data:", data);
+      threeCards = JSON.parse(data).cards;
+    } catch (err) {
+      error = err.message;
+      console.error("Error:", err); // test 3
+    } finally {
+      isLoading = false;
+    }
+    window.location.href = "/cassandra";
+  }
+
   let threeCards = [];
   let isLoading = true;
   let error = null;
@@ -95,7 +112,9 @@ Code has been changed in routes package, some added to main
       </div>
     </div>
   {/if}
-  <div class="flex justify-center"></div>
+  <button on:click={getFate} class="mx-auto mt-8 block" style="--clr:#c377d4"
+  ><span>Get Fate</span><i></i></button
+>
 </div>
 
 <style>
