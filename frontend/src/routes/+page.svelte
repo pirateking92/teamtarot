@@ -1,12 +1,7 @@
 <script>
   import "../app.css";
 
-  import { userName } from "./stores.js";
-
-  let inputValue = "";
-
   function handleButtonClick() {
-    $userName = inputValue;
     window.location.href = "/cassandra";
   }
 </script>
@@ -15,13 +10,6 @@
   <br /><br />
   <div class="intro-text">
     <h1>Ah, I've been expecting you, seeker. My name is Cassandra.</h1>
-    <br /><br />
-    <input
-      class="input-field"
-      type="text"
-      placeholder="Enter your name"
-      bind:value={inputValue}
-    />
     <br /><br />
     <button on:click={handleButtonClick} style="--clr:#c377d4"
       ><span>Follow Cassandra</span><i></i></button
@@ -56,6 +44,15 @@
     margin: auto;
     padding: 0.5em;
     border-radius: 50px;
+  }
+
+  .input-field {
+    background: linear-gradient(to right, #20051c, #46204e);
+    border-radius: 20px;
+    padding: 0.4em;
+    margin: 0 auto 2em auto;
+    border: #20051c solid 2px;
+    outline: none;
   }
 
   button {

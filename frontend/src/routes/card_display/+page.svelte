@@ -1,9 +1,8 @@
 <script>
   import { onMount } from "svelte";
-  import { userName } from "../stores.js";
 
   function handleButtonClick() {
-    window.location.href = "/card_display";
+    window.location.href = "/";
   }
 
   let threeCards = [];
@@ -39,11 +38,11 @@ Code has been changed in routes package, some added to main
 />
 <div class="container mx-auto mt-8">
   <div class="flex justify-between items-center mb-8">
-    <h1 class="text-4xl font-bold card-display-title">
-      Arcana Tarot Card Reading
-    </h1>
+    <h3 class="text-2xl font-bold card-display-title">
+      Welcome to Cassandra's Parlor
+    </h3>
     <button on:click={handleButtonClick} style="--clr:#c377d4"
-      ><span>Draw new Tarot Cards</span><i></i></button
+      ><span>Leave the Parlor</span><i></i></button
     >
   </div>
 
@@ -55,7 +54,7 @@ Code has been changed in routes package, some added to main
     <div class="mx-auto px-20">
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4 ml-12 mr-12">
         {#each threeCards as card, index}
-          <div class="bg-white shadow-md p-4 rounded-lg">
+          <div class="bg-card-container shadow-md p-4 rounded-lg">
             <h2 class="text-xl font-semibold mb-2">
               {#if index === 0}
                 <span>Past</span>
@@ -117,6 +116,12 @@ Code has been changed in routes package, some added to main
   .card-image {
     max-width: 200px; /* Set the desired maximum width */
     max-height: 300px; /* Set the desired maximum height */
+    display: block;
+    margin: 1em auto;
+  }
+
+  .bg-card-container {
+    background: linear-gradient(to right, #b9b7ce, #4f86c8);
   }
 
   button {
@@ -126,17 +131,18 @@ Code has been changed in routes package, some added to main
     text-decoration: none;
     text-transform: uppercase;
     border: none;
-    letter-spacing: 0.2rem;
-    font-size: 1.5rem;
-    padding: 1.3rem 3rem;
+    letter-spacing: 0.1rem;
+    font-size: 0.8rem;
+    padding: 0.5rem 2rem;
     transition: 0.2s;
     animation: box 2s infinite;
     border-radius: 20px;
+    font-family: MedievalSharp, Arial, Helvetica, sans-serif;
   }
 
   button:hover {
-    letter-spacing: 0.3rem;
-    padding: 1.3rem 3rem;
+    letter-spacing: 0.1rem;
+    padding: 0.6rem 2rem;
     background: var(--clr);
     color: var(--clr);
     /* box-shadow: 0 0 35px var(--clr); */

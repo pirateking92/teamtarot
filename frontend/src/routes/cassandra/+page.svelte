@@ -1,5 +1,4 @@
 <script>
-  import { userName } from "../stores.js";
   import "../../app.css";
 </script>
 
@@ -7,7 +6,7 @@
   <br /><br />
   <div class="intro-text">
     <p>
-      I can sense hope and fear within yourself, {#if $userName}{$userName}{:else}seeker{/if}.
+      I can sense hope and fear within yourself, seeker.
       Let me guide you through the land where fate, fortune and destiny
       intertwine.
     </p>
