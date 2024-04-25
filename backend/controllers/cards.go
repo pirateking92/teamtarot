@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"math/rand"
 	"net/http"
 	"os"
@@ -13,8 +14,10 @@ import (
 	"main.go/services"
 )
 
+// Local storage for interpretations and UUIDs
 var localStorage map[string]string = make(map[string]string)
 
+// Function to select 3 random tarot cards from the deck
 func GetRandomCard(deck []models.Card, currentCards []models.Card) models.Card {
 	randomiser := rand.New(rand.NewSource(time.Now().UnixNano()))
 
@@ -36,13 +39,14 @@ func GetRandomCard(deck []models.Card, currentCards []models.Card) models.Card {
 	}
 }
 
+// Function to get and interpret 3 tarot cards
 func GetandInterpretThreeCards(ctx *gin.Context) {
-	deck, _ := services.FetchTarotCards() //returns a type of []Card
-	// if err != nil {
-	// 	SendInternalError(ctx, err)
-	// 	return
-	// } ADD THIS BACK IN WHEN ERROR CONTROLLER EXISTS
-
+	deck, err := services.FetchTarotCards() //returns a type of []Card
+	if err != nil {
+		SendInternalError(ctx, err)
+		return
+	}
+	requestID := uuid.New()
 	var threeCards []models.Card
 	threeCards = append(threeCards, GetRandomCard(deck, threeCards))
 	threeCards = append(threeCards, GetRandomCard(deck, threeCards))
@@ -61,44 +65,62 @@ func GetandInterpretThreeCards(ctx *gin.Context) {
 			MeaningReverse: card.MeaningReverse,
 			Description:    card.Description,
 			ImageName:      card.ShortName + ".jpg",
+			Reversed:       ReverseRandomiser(),
 		})
-		cardNames = append(cardNames, card.CardName)
+
+		var reversedValue string
+		if card.Reversed {
+			reversedValue = "notReversed"
+		} else {
+			reversedValue = "reversed"
+		}
+
+		cardNames = append(cardNames, card.CardName, reversedValue)
+
+		// reversedValue := strconv.FormatBool(card.Reversed)
+		// cardNames = append(cardNames, card.CardName, reversedValue)
 	}
 
-	// var cardNames []string
-	// for _, card := range threeCards {
-	// 	cardNames = append(cardNames, card.CardName)
-	// }
+	//here we send our three Cards and the requestID in JSON form to the client, to be rendered in the UI.
 
-	// interpret, _ := services.InterpretTarotCards("sk-proj-ciSJ9dZTcV5znq0TrIOnT3BlbkFJcQiiBmTQc31dAoOGaHap", cardNames)
-	ctx.JSON(http.StatusOK, gin.H{"cards": jsonCards})
+	ctx.JSON(http.StatusOK, gin.H{"cards": jsonCards, "requestID": requestID})
 
-	// Interpret the cards
+	// here we use Open AI's API to generate a reading of our three cards, we store this reading locally to return it to the user later.
 	go func() {
 		apiKey := os.Getenv("API_KEY")
-		requestID := uuid.New()
 		interpretation, err := services.InterpretTarotCards(apiKey, cardNames, requestID)
 		if err != nil {
 			SendInternalError(ctx, err)
 			return
 		}
 		localStorage[requestID.String()] = interpretation
+		GetInterpretation(ctx)
+		fmt.Println(interpretation)
 	}()
-	// ctx.JSON(http.StatusOK, gin.H{"interpret": interpretation, "requestID": requestID})
 
-	// func InterpretThreeCards(ctx *gin.Context) {
-	// 	var request struct {
-	// 		Cards []string `json:"cards"`
-	// 		}
+}
 
-	// 		requestID := uuid.New()
-	// 	if err := ctx.BindJSON(&request); err != nil {
-	// 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "invalid request"})
-	// 		return
-	// 	}
-	// 	// apiKey := os.Getenv("API_KEY")
-	// 	// requestID = uuid.New()
+// function to send the interpretation from the internal storage to the frontend
+func GetInterpretation(ctx *gin.Context) {
+	// Get the UUID from the request parameters
+	requestID := ctx.Param("uuid")
 
-	// // interpret, _ := services.InterpretTarotCards(apiKey, request.Cards, requestID)
-	// ctx.JSON(http.StatusOK, gin.H{"interpret": interpretation, "requestID": requestID})
+	// Retrieve the interpretation from local storage
+	interpretation, ok := localStorage[requestID]
+
+	// Check if the interpretation was found
+	if !ok {
+		ctx.JSON(http.StatusNotFound, gin.H{"error": "No interpretation found for this UUID"})
+		return
+	}
+
+	// Return the interpretation
+	ctx.JSON(http.StatusOK, gin.H{"interpretation": interpretation})
+}
+
+// function to generate reversed cards at random
+func ReverseRandomiser() bool {
+	randomiser := rand.New(rand.NewSource(time.Now().UnixNano()))
+	randomBool := randomiser.Intn(2)
+	return randomBool == 0
 }

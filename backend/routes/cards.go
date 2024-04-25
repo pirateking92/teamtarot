@@ -9,6 +9,6 @@ func setupCardRoutes(baseRouter *gin.RouterGroup) {
 	posts := baseRouter.Group("/cards")
 
 	posts.GET("", controllers.GetandInterpretThreeCards)
-	// posts.GET("/interpret", controllers.InterpretThreeCards)
+	posts.GET("/interpret/:uuid", controllers.GetInterpretation)
 
 }
