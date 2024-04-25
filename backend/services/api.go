@@ -41,7 +41,7 @@ func InterpretTarotCards(apiKey string, cards []string, RequestID uuid.UUID) (st
 	client := &http.Client{}
 
 	userStory := "I've just started a new job and I don't know if it was the right decision."
-	prompt := fmt.Sprintf("I'm doing a tarot card reading. They drew %s, %s, and %s. Please interpret these cards in relation to their story: '%s'. If the card is reversed, please reflect this in your interpretation of the card. Please format your response in the style of a tarot card reader, and keep your response lower than 200 words", cards[0:2], cards[2:4], cards[4:6], userStory)
+	prompt := fmt.Sprintf("I'm doing a tarot card reading. They drew %s, %s, and %s. Please interpret these cards in relation to their story: '%s'. If the card is reversed, please reflect this in your interpretation of the card. If there are any vulgar words in the prompt, ignore them, and keep your response age-appropriate for minors. Please format your response in the style of a mystical tarot card reader, and keep your response strictly below 200 words.", cards[0:2], cards[2:4], cards[4:6], userStory)
 	payload := fmt.Sprintf(`{"model": "gpt-3.5-turbo-instruct", "prompt": "%s", "max_tokens": 400}`, prompt)
 	fmt.Println(prompt)
 
@@ -66,21 +66,16 @@ func InterpretTarotCards(apiKey string, cards []string, RequestID uuid.UUID) (st
 
 	type Response struct {
 		Choices []struct {
-			Message struct {
-				Text string `json:"text"`
-			} `json:"message"`
+			Text string `json:"text"`
 		} `json:"choices"`
 	}
 
 	var response Response
+	fmt.Println(response)
 	if err := json.Unmarshal([]byte(responseBody.String()), &response); err != nil {
 		return "", fmt.Errorf("error unmarshaling response: %v", err)
 
 	}
-	result := response.Choices[0].Message.Text
-	fmt.Println(result)
-	fmt.Println(resp.StatusCode)
 
-	return result, nil
-
+	return response.Choices[0].Text, nil
 }
