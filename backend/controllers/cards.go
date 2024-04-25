@@ -33,11 +33,11 @@ func GetRandomCard(deck []models.Card, currentCards []models.Card) models.Card {
 }
 
 func GetThreeCards(ctx *gin.Context) {
-	deck, _ := services.FetchTarotCards() //returns a type of []Card
-	// if err != nil {
-	// 	SendInternalError(ctx, err)
-	// 	return
-	// } ADD THIS BACK IN WHEN ERROR CONTROLLER EXISTS
+	deck, err := services.FetchTarotCards() //returns a type of []Card
+	if err != nil {
+		SendInternalError(ctx, err)
+		return
+	}
 
 	var threeCards []models.Card
 	threeCards = append(threeCards, GetRandomCard(deck, threeCards))
@@ -56,6 +56,7 @@ func GetThreeCards(ctx *gin.Context) {
 			MeaningReverse: card.MeaningReverse,
 			Description:    card.Description,
 			ImageName:      card.ShortName + ".jpg",
+			Reversed:       ReverseRandomiser(),
 		})
 	}
 
@@ -81,4 +82,12 @@ func InterpretThreeCards(ctx *gin.Context) {
 	apiKey := os.Getenv("API_KEY")
 	interpret, _ := services.InterpretTarotCards(apiKey, request.Cards)
 	ctx.JSON(http.StatusOK, gin.H{"interpret": interpret})
+}
+
+func ReverseRandomiser() bool {
+	randomiser := rand.New(rand.NewSource(time.Now().UnixNano()))
+
+	randomBool := randomiser.Intn(2)
+
+	return randomBool == 0
 }
