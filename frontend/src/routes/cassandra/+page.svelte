@@ -1,18 +1,31 @@
 <script>
-  import "../app.css";
-
-  function handleButtonClick() {
-    window.location.href = "/cassandra";
-  }
+  import "../../app.css";
 </script>
 
 <div class="container">
   <br /><br />
   <div class="intro-text">
-    <h1>Ah, I've been expecting you, seeker. My name is Cassandra.</h1>
-    <br /><br />
-    <button on:click={handleButtonClick} style="--clr:#c377d4"
-      ><span>Follow Cassandra</span><i></i></button
+    <p>
+      I can sense hope and fear within yourself, seeker.
+      Let me guide you through the land where fate, fortune and destiny
+      intertwine.
+    </p>
+    <br />
+    <p>
+      But be warned - the truths we may uncover could shake the very foundations
+      of what you think you know.
+    </p>
+    <br />
+    <p>
+      After this, there is no turning back. If you decide to leave - the story
+      ends, you return to your world and believe whatever you want to believe.
+      If you enter - I will show you how deep the rabbit hole goes.
+    </p>
+    <br />
+    <br />
+    <button
+      on:click={() => (window.location.href = "/card_display")}
+      style="--clr:#c377d4"><span>Enter</span><i></i></button
     >
   </div>
   <br />
@@ -44,15 +57,6 @@
     margin: auto;
     padding: 0.5em;
     border-radius: 50px;
-  }
-
-  .input-field {
-    background: linear-gradient(to right, #20051c, #46204e);
-    border-radius: 20px;
-    padding: 0.4em;
-    margin: 0 auto 2em auto;
-    border: #20051c solid 2px;
-    outline: none;
   }
 
   button {
