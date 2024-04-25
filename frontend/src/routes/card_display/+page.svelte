@@ -30,14 +30,20 @@ Code has been changed in routes package, some added to main
   });
 </script>
 <div class="container mx-auto mt-8">
-  <h1 class="text-4xl font-bold mb-4">Arcana Tarot Card Reading</h1>
+  <div class="flex justify-between items-center mb-8">
+    <h1 class="text-4xl font-bold">Arcana Tarot Card Reading</h1>
+    <a href="/"class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline"
+      >Give me another reading</a
+    >
+  </div>
 
   {#if isLoading}
     <p>Loading...</p>
   {:else if error}
     <p class="text-red-500">Error: {error}</p>
   {:else}
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+  <div class="mx-auto px-20"> 
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 ml-12 mr-12">
       {#each threeCards as card, index}
         <div class="bg-white shadow-md p-4 rounded-lg">
           <h2 class="text-xl font-semibold mb-2">
@@ -48,19 +54,33 @@ Code has been changed in routes package, some added to main
             {:else}
               <span>Present</span>
             {/if}
-            <!-- {card.name} -->
           </h2>
           
           <h2 class="text-xl font-semibold mb-2">{card.name}</h2>
-          <img src={`src/lib/assets/${card.image_file_name}`} alt="{card.name}" class="mb-2 rounded-lg">
+          {#if card.reversed}
+            <img src={`src/lib/assets/${card.image_file_name}`} alt="{card.name}" class="mb-2 rounded-lg card-image" style="transform: rotate(180deg);">
+          {:else}
+            <img src={`src/lib/assets/${card.image_file_name}`} alt="{card.name}" class="mb-2 rounded-lg card-image">
+          {/if}
           <p class="text-gray-600 mb-2">Type: {card.type}</p>
-          <p class="text-gray-600 mb-2">Meaning Upright: {card.meaning_up}</p>
-          <p class="text-gray-600 mb-2">Meaning Reversed: {card.meaning_rev}</p>
-          <!-- <p class="text-gray-600">{card.desc}</p> -->
-        </div>
+          {#if card.reversed}
+            <p class="text-gray-600 mb-2">Meaning Reversed: {card.meaning_rev}</p>
+          {:else}
+            <p class="text-gray-600 mb-2">Meaning Upright: {card.meaning_up}</p>
+          {/if}
+        </div> 
       {/each}
     </div>
+  </div>
   {/if}
-
-  <p class="mt-8 text-gray-500">Lol just kiddin hun, tarot costs extra xxx</p>
+  <div class="flex justify-center">
+  </div>
 </div>
+
+
+<style>
+  .card-image {
+    max-width: 200px; /* Set the desired maximum width */
+    max-height: 300px; /* Set the desired maximum height */
+  }
+</style>

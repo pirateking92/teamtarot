@@ -1,30 +1,32 @@
 <script>
-  import "../app.css";
-
-  import { userName } from "./stores.js";
-
-  let inputValue = "";
-
-  function handleButtonClick() {
-    $userName = inputValue;
-    window.location.href = "/cassandra";
-  }
+  import { userName } from "../stores.js";
+  import "../../app.css";
 </script>
 
 <div class="container">
   <br /><br />
   <div class="intro-text">
-    <h1>Ah, I've been expecting you, seeker. My name is Cassandra.</h1>
-    <br /><br />
-    <input
-      class="input-field"
-      type="text"
-      placeholder="Enter your name"
-      bind:value={inputValue}
-    />
-    <br /><br />
-    <button on:click={handleButtonClick} style="--clr:#c377d4"
-      ><span>Follow Cassandra</span><i></i></button
+    <p>
+      I can sense hope and fear within yourself, {#if $userName}{$userName}{:else}seeker{/if}.
+      Let me guide you through the land where fate, fortune and destiny
+      intertwine.
+    </p>
+    <br />
+    <p>
+      But be warned - the truths we may uncover could shake the very foundations
+      of what you think you know.
+    </p>
+    <br />
+    <p>
+      After this, there is no turning back. If you decide to leave - the story
+      ends, you return to your world and believe whatever you want to believe.
+      If you enter - I will show you how deep the rabbit hole goes.
+    </p>
+    <br />
+    <br />
+    <button
+      on:click={() => (window.location.href = "/card_display")}
+      style="--clr:#c377d4"><span>Enter</span><i></i></button
     >
   </div>
   <br />
