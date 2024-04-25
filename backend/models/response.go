@@ -7,4 +7,5 @@ type JSONCard struct {
 	MeaningReverse string `json:"meaning_rev"`
 	Description    string `json:"desc"`
 	ImageName      string `json:"image_file_name"`
+	Reversed       bool   `json:"reversed"`
 }
