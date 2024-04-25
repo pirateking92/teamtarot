@@ -6,10 +6,14 @@ import (
 	"os"
 	"time"
 
+	"github.com/google/uuid"
+
 	"github.com/gin-gonic/gin"
 	"main.go/models"
 	"main.go/services"
 )
+
+var localStorage map[string]string = make(map[string]string)
 
 func GetRandomCard(deck []models.Card, currentCards []models.Card) models.Card {
 	randomiser := rand.New(rand.NewSource(time.Now().UnixNano()))
@@ -32,7 +36,7 @@ func GetRandomCard(deck []models.Card, currentCards []models.Card) models.Card {
 	}
 }
 
-func GetThreeCards(ctx *gin.Context) {
+func GetandInterpretThreeCards(ctx *gin.Context) {
 	deck, _ := services.FetchTarotCards() //returns a type of []Card
 	// if err != nil {
 	// 	SendInternalError(ctx, err)
@@ -47,6 +51,7 @@ func GetThreeCards(ctx *gin.Context) {
 	// from here below we convert the three Card into three JSONCard
 
 	var jsonCards []models.JSONCard
+	var cardNames []string
 
 	for _, card := range threeCards {
 		jsonCards = append(jsonCards, models.JSONCard{
@@ -57,6 +62,7 @@ func GetThreeCards(ctx *gin.Context) {
 			Description:    card.Description,
 			ImageName:      card.ShortName + ".jpg",
 		})
+		cardNames = append(cardNames, card.CardName)
 	}
 
 	// var cardNames []string
@@ -67,18 +73,32 @@ func GetThreeCards(ctx *gin.Context) {
 	// interpret, _ := services.InterpretTarotCards("sk-proj-ciSJ9dZTcV5znq0TrIOnT3BlbkFJcQiiBmTQc31dAoOGaHap", cardNames)
 	ctx.JSON(http.StatusOK, gin.H{"cards": jsonCards})
 
-	//store it in the local storage
-}
+	// Interpret the cards
+	go func() {
+		apiKey := os.Getenv("API_KEY")
+		requestID := uuid.New()
+		interpretation, err := services.InterpretTarotCards(apiKey, cardNames, requestID)
+		if err != nil {
+			SendInternalError(ctx, err)
+			return
+		}
+		localStorage[requestID.String()] = interpretation
+	}()
+	// ctx.JSON(http.StatusOK, gin.H{"interpret": interpretation, "requestID": requestID})
 
-func InterpretThreeCards(ctx *gin.Context) {
-	var request struct {
-		Cards []string `json:"cards"`
-	}
-	if err := ctx.BindJSON(&request); err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "invalid request"})
-		return
-	}
-	apiKey := os.Getenv("API_KEY")
-	interpret, _ := services.InterpretTarotCards(apiKey, request.Cards)
-	ctx.JSON(http.StatusOK, gin.H{"interpret": interpret})
+	// func InterpretThreeCards(ctx *gin.Context) {
+	// 	var request struct {
+	// 		Cards []string `json:"cards"`
+	// 		}
+
+	// 		requestID := uuid.New()
+	// 	if err := ctx.BindJSON(&request); err != nil {
+	// 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "invalid request"})
+	// 		return
+	// 	}
+	// 	// apiKey := os.Getenv("API_KEY")
+	// 	// requestID = uuid.New()
+
+	// // interpret, _ := services.InterpretTarotCards(apiKey, request.Cards, requestID)
+	// ctx.JSON(http.StatusOK, gin.H{"interpret": interpretation, "requestID": requestID})
 }

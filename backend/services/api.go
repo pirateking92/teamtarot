@@ -10,6 +10,7 @@ import (
 	"strings"
 
 	"main.go/models"
+	"github.com/google/uuid"
 )
 
 // FetchTarotCards makes a GET request to the API to fetch tarot cards
@@ -37,7 +38,7 @@ func FetchTarotCards() ([]models.Card, error) {
 }
 
 // InterpretTarotCards interprets tarot cards using the OpenAI API
-func InterpretTarotCards(apiKey string, cards []string) (string, error) {
+func InterpretTarotCards(apiKey string, cards []string, RequestID uuid.UUID) (string, error) {
 	client := &http.Client{}
 
 	userStory := "I've just started a new job and I don't know if it was the right decision."
