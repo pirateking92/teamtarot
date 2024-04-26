@@ -5,7 +5,10 @@
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build",
-		"preview": "vite preview"
+		"preview": "vite preview",
+		"test": "vitest run",
+		"test:ui": "vitest --ui",
+		"test:watch": "vitest"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^3.0.0",
@@ -14,6 +17,8 @@
 		"@sveltejs/vite-plugin-svelte": "^3.1.0",
 		"@testing-library/jest-dom": "^6.4.2",
 		"@testing-library/svelte": "^5.1.0",
+		"@testing-library/user-event": "^14.5.2",
+		"@vitest/ui": "^1.5.2",
 		"jsdom": "^24.0.0",
 		"svelte": "^4.2.7",
 		"tailwindcss": "^3.4.3",
