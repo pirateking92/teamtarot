@@ -1,9 +1,5 @@
 <script>
   import "../app.css";
-
-  function handleButtonClick() {
-    window.location.href = "/cassandra";
-  }
 </script>
 
 <div class="container">
@@ -11,8 +7,9 @@
   <div class="intro-text">
     <h1>Ah, I've been expecting you, seeker. My name is Cassandra.</h1>
     <br /><br />
-    <button on:click={handleButtonClick} style="--clr:#c377d4"
-      ><span>Follow Cassandra</span><i></i></button
+    <button
+      on:click={() => (window.location.href = "/cassandra")}
+      style="--clr:#c377d4"><span>Follow Cassandra</span><i></i></button
     >
   </div>
   <br />

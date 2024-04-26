@@ -29,6 +29,7 @@
 	"dependencies": {
 		"autoprefixer": "^10.4.19",
 		"cssnano": "^6.1.2",
-		"svelte-preprocess": "^5.1.4"
+		"svelte-preprocess": "^5.1.4",
+		"svelte-routing": "^2.12.0"
 	}
 }
