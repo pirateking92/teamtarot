@@ -10,6 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"
+	"main.go/env"
 	"main.go/models"
 	// "gorm.io/gorm"
 )
@@ -27,7 +28,7 @@ type TestSuiteEnv struct {
 
 // Tests are run before they start
 func (suite *TestSuiteEnv) SetupSuite() {
-	// env.LoadEnv(".test.env")
+	env.LoadEnv(".test.env")
 	// models.OpenDatabaseConnection()
 	// models.AutoMigrateModels()
 	// suite.db = models.Database

@@ -87,6 +87,12 @@ func GetandInterpretThreeCards(ctx *gin.Context) {
 
 	// here we use Open AI's API to generate a reading of our three cards, we store this reading locally to return it to the user later.
 	go func() {
+		testing := os.Getenv("TESTING")
+		if testing == "True" {
+			interpretation := "This is a test interpretation"
+			localStorage[requestID.String()] = interpretation
+			return
+		}
 		apiKey := os.Getenv("API_KEY")
 		interpretation, err := services.InterpretTarotCards(apiKey, cardNames, requestID)
 		if err != nil {
