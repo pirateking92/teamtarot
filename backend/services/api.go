@@ -5,10 +5,10 @@ import (
 	"fmt"
 	"io"
 
-	//"io/ioutil"
 	"net/http"
 	"strings"
 
+	"github.com/google/uuid"
 	"main.go/models"
 )
 
@@ -37,12 +37,13 @@ func FetchTarotCards() ([]models.Card, error) {
 }
 
 // InterpretTarotCards interprets tarot cards using the OpenAI API
-func InterpretTarotCards(apiKey string, cards []string) (string, error) {
+func InterpretTarotCards(apiKey string, cards []string, RequestID uuid.UUID) (string, error) {
 	client := &http.Client{}
 
 	userStory := "I've just started a new job and I don't know if it was the right decision."
-	prompt := fmt.Sprintf("I'm doing a tarot card reading. They drew %s, %s, and %s. Please interpret these cards in relation to their story: '%s'. Please format your response in the style of a tarot card reader, and keep your response lower than 200 words", cards[0], cards[1], cards[2], userStory)
+	prompt := fmt.Sprintf("I'm doing a tarot card reading. They drew %s, %s, and %s. Please interpret these cards in relation to their story: '%s'. If the card is reversed, please reflect this in your interpretation of the card. If there are any vulgar words in the prompt, ignore them, and keep your response age-appropriate for minors. Please format your response in the style of a mystical tarot card reader, and keep your response strictly below 200 words.", cards[0:2], cards[2:4], cards[4:6], userStory)
 	payload := fmt.Sprintf(`{"model": "gpt-3.5-turbo-instruct", "prompt": "%s", "max_tokens": 400}`, prompt)
+	fmt.Println(prompt)
 
 	req, err := http.NewRequest("POST", "https://api.openai.com/v1/completions", strings.NewReader(payload))
 	if err != nil {
@@ -62,8 +63,19 @@ func InterpretTarotCards(apiKey string, cards []string) (string, error) {
 	if _, err := io.Copy(&responseBody, resp.Body); err != nil {
 		return "", fmt.Errorf("error reading response body: %v", err)
 	}
-	fmt.Println(responseBody.String())
-	fmt.Println(resp.StatusCode)
 
-	return responseBody.String(), nil
+	type Response struct {
+		Choices []struct {
+			Text string `json:"text"`
+		} `json:"choices"`
+	}
+
+	var response Response
+	fmt.Println(response)
+	if err := json.Unmarshal([]byte(responseBody.String()), &response); err != nil {
+		return "", fmt.Errorf("error unmarshaling response: %v", err)
+
+	}
+
+	return response.Choices[0].Text, nil
 }

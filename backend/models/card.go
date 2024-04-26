@@ -7,4 +7,5 @@ type Card struct {
 	MeaningReverse string `json:"meaning_rev"`
 	Description    string `json:"desc"`
 	ShortName      string `json:"name_short"`
+	Reversed       bool   `json:"reversed"`
 }
