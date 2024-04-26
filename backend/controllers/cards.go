@@ -15,7 +15,7 @@ import (
 )
 
 // Local storage for interpretations and UUIDs
-var localStorage map[string]string = make(map[string]string)
+var LocalStorage map[string]string = make(map[string]string)
 
 // Function to select 3 random tarot cards from the deck
 func GetRandomCard(deck []models.Card, currentCards []models.Card) models.Card {
@@ -58,6 +58,7 @@ func GetandInterpretThreeCards(ctx *gin.Context) {
 	var cardNames []string
 
 	for _, card := range threeCards {
+		reversed := ReverseRandomiser()
 		jsonCards = append(jsonCards, models.JSONCard{
 			CardName:       card.CardName,
 			Type:           card.Type,
@@ -65,14 +66,14 @@ func GetandInterpretThreeCards(ctx *gin.Context) {
 			MeaningReverse: card.MeaningReverse,
 			Description:    card.Description,
 			ImageName:      card.ShortName + ".jpg",
-			Reversed:       ReverseRandomiser(),
+			Reversed:       reversed,
 		})
-
 		var reversedValue string
+		card.Reversed = reversed
 		if card.Reversed {
-			reversedValue = "notReversed"
+			reversedValue = "Reversed"
 		} else {
-			reversedValue = "reversed"
+			reversedValue = "NotReversed"
 		}
 
 		cardNames = append(cardNames, card.CardName, reversedValue)
@@ -90,7 +91,7 @@ func GetandInterpretThreeCards(ctx *gin.Context) {
 		testing := os.Getenv("TESTING")
 		if testing == "True" {
 			interpretation := "This is a test interpretation"
-			localStorage[requestID.String()] = interpretation
+			LocalStorage[requestID.String()] = interpretation
 			return
 		}
 		apiKey := os.Getenv("API_KEY")
@@ -99,7 +100,7 @@ func GetandInterpretThreeCards(ctx *gin.Context) {
 			SendInternalError(ctx, err)
 			return
 		}
-		localStorage[requestID.String()] = interpretation
+		LocalStorage[requestID.String()] = interpretation
 		GetInterpretation(ctx)
 		fmt.Println(interpretation)
 	}()
@@ -112,7 +113,7 @@ func GetInterpretation(ctx *gin.Context) {
 	requestID := ctx.Param("uuid")
 
 	// Retrieve the interpretation from local storage
-	interpretation, ok := localStorage[requestID]
+	interpretation, ok := LocalStorage[requestID]
 
 	// Check if the interpretation was found
 	if !ok {
