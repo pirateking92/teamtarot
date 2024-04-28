@@ -1,43 +1,16 @@
 <script>
-  import { onMount, setContext, getContext } from "svelte";
-  
-  const Context = Symbol('interpretation');
+  import { onMount } from "svelte";
+  import { goto } from '$app/navigation'; 
 
   let threeCards = [];
   let requestID = null;
   let isLoading = true;
   let error = null;
-  let interpretation = null;
 
   function handleButtonClick() {
-    window.location.href = "/";
+    // Navigate to the interpretation page
+    goto(`/cards/interpret/${requestID}`);
   }
-
-async function getFate() {
-  try {
-    let data;
-    do {
-      const res = await fetch(`http://localhost:8082/cards/interpret/${requestID}`);
-      if (!res.ok) {
-        throw new Error('Failed to fetch interpretation');
-      }
-      data = await res.json();
-      if (data.interpretation) {
-        interpretation = data.interpretation;
-        setContext(Context, interpretation);
-        window.location.href = `/cards/interpret/${requestID}`;
-      } else {
-        // Wait for 1 second before trying again
-        await new Promise(resolve => setTimeout(resolve, 1000));
-      }
-    } while (!data.interpretation);
-  } catch (err) {
-    error = err.message;
-    console.error("Error:", err);
-  } finally {
-    isLoading = false;
-  }
-}
 
   onMount(async () => {
     try {
@@ -52,9 +25,8 @@ async function getFate() {
       isLoading = false;
     }
   });
-
-
 </script>
+
 
 
 
@@ -121,9 +93,7 @@ async function getFate() {
       </div>
     </div>
   {/if}
-  <button on:click={getFate} class="mx-auto mt-8 block" style="--clr:#c377d4"
-  ><span>Get Fate</span><i></i></button
->
+  <button on:click={handleButtonClick} class="mx-auto mt-8 block" style="--clr:#c377d4"><span>Get Fate</span><i></i></button>
 </div>
 
 <style>
