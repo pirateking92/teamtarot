@@ -78,43 +78,18 @@
 <p>{finalInterpretation}</p> -->
 <script context="module">
   export async function load({ params }) {
-    const { uuid } = params;
+    const { id } = params;
 
-    console.log('uuid:', uuid);
+    // Fetch interpretation based on id
+    const res = await fetch(`http://localhost:8082/cards/interpret/${id}`);
+    const data = await res.text();
 
-    const url = `http://localhost:8082/cards/interpret/${uuid}`;
-    console.log('fetch URL:', url);
-
-    try {
-      const res = await fetch(url);
-      const data = await res.text();
-
-      console.log('server response:', data);
-
-      if (!res.ok) {
-        console.error('Error in server response:', data);
-        return {
-          props: {
-            finalInterpretation: '', // Return an empty finalInterpretation prop
-          },
-        };
+    // Return the fetched interpretation
+    return {
+      props: {
+        finalInterpretation: data
       }
-
-      console.log('fetched data:', data);
-
-      return {
-        props: {
-          finalInterpretation: data,
-        },
-      };
-    } catch (err) {
-      console.error('Error in fetch request:', err);
-      return {
-        props: {
-          finalInterpretation: '', // Return an empty finalInterpretation prop
-        },
-      };
-    }
+    };
   }
 </script>
 
