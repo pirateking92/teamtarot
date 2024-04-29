@@ -10,7 +10,7 @@
   }
 
   function handleButtonClick() {
-    const url = `/card_display?name=${userName}&userstory=${encodeURIComponent(userStory)}`;
+    const url = `/cards?name=${userName}&userstory=${encodeURIComponent(userStory)}`;
     window.location.href = url;
   }
 </script>
