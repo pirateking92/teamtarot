@@ -1,37 +1,58 @@
 <script>
   import { onMount } from "svelte";
 
+  let threeCards = [];
+  let requestID = null;
+  let isLoading = true;
+  let error = null;
+  let interpretation = null;
+  let showInterpretation = false;
+
   function handleButtonClick() {
     window.location.href = "/";
   }
 
-  let threeCards = [];
-  let isLoading = true;
-  let error = null;
+
+
+  async function getFate() {
+    try {
+      let data;
+      do {
+        const res = await fetch(
+          `http://localhost:8082/cards/interpret/${requestID}`
+        );
+        data = await res.json();
+        if (data.interpretation) {
+          interpretation = data.interpretation;
+        } else {
+          // Wait for 1 second before trying again
+          await new Promise((resolve) => setTimeout(resolve, 1000));
+        }
+      } while (!data.interpretation);
+    } catch (err) {
+      error = err.message;
+      console.error("Error:", err);
+    } finally {
+      showInterpretation = true;
+    }
+  }
 
   onMount(async () => {
     try {
-      const res = await fetch("http://localhost:8082/cards");
-      console.log("Response Status:", res.status); // test 1
-      console.log("Response Headers:", res.headers); // test 2
-      const data = await res.text(); //changed from res.json()
-      console.log("Response Data:", data);
+      const res = await fetch(`http://localhost:8082/cards`);
+      const data = await res.text();
       threeCards = JSON.parse(data).cards;
+      requestID = JSON.parse(data).requestID;
     } catch (err) {
       error = err.message;
-      console.error("Error:", err); // test 3
+      console.error("Error:", err);
     } finally {
       isLoading = false;
     }
   });
+
 </script>
 
-<!-- 
-    this script text is the js that parses the JSON data.
-Tried to change routes and get a response, but didnt get very far.
-Perhaps some changes to the routes? Tried getting responses from the backend but couldnt.
-Code has been changed in routes package, some added to main
--->
 <link
   href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
   rel="stylesheet"
@@ -47,10 +68,14 @@ Code has been changed in routes package, some added to main
   </div>
 
   {#if isLoading}
+  <div>
     <p>Loading...</p>
+  </div>
+
   {:else if error}
     <p class="text-red-500">Error: {error}</p>
   {:else}
+    {#if !showInterpretation}
     <div class="mx-auto px-20">
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4 ml-12 mr-12">
         {#each threeCards as card, index}
@@ -93,9 +118,16 @@ Code has been changed in routes package, some added to main
           </div>
         {/each}
       </div>
+      <button on:click={getFate} class="mx-auto mt-8 block" style="--clr:#c377d4"
+      ><span>Get Fate</span><i></i></button
+    >
     </div>
+    {:else}
+    <div class="mt-4 bg-card-container shadow-md p-4 rounded-lg">
+      <p>{interpretation}</p>
+    </div>
+    {/if}
   {/if}
-  <div class="flex justify-center"></div>
 </div>
 
 <style>

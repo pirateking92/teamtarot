@@ -68,6 +68,7 @@ func GetandInterpretThreeCards(ctx *gin.Context) {
 			ImageName:      card.ShortName + ".jpg",
 			Reversed:       reversed,
 		})
+
 		var reversedValue string
 		card.Reversed = reversed
 		if card.Reversed {
@@ -104,7 +105,6 @@ func GetandInterpretThreeCards(ctx *gin.Context) {
 		GetInterpretation(ctx)
 		fmt.Println(interpretation)
 	}()
-
 }
 
 // function to send the interpretation from the internal storage to the frontend
