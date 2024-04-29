@@ -1,12 +1,25 @@
 <script>
   import "../../app.css";
+
+  let userName = "";
+  let userStory = "";
+
+  if (typeof window !== "undefined") {
+    const urlParams = new URLSearchParams(window.location.search);
+    userName = urlParams.get("name") || "";
+  }
+
+  function handleButtonClick() {
+    const url = `/card_display?name=${userName}&userstory=${encodeURIComponent(userStory)}`;
+    window.location.href = url;
+  }
 </script>
 
 <div class="container">
   <br /><br />
   <div class="intro-text">
     <p>
-      I can sense hope and fear within yourself, seeker.
+      I can sense hope and fear within yourself, {#if userName}{userName}{:else}seeker{/if}.
       Let me guide you through the land where fate, fortune and destiny
       intertwine.
     </p>
@@ -23,9 +36,15 @@
     </p>
     <br />
     <br />
-    <button
-      on:click={() => (window.location.href = "/card_display")}
-      style="--clr:#c377d4"><span>Enter</span><i></i></button
+    <textarea
+      class="input-field"
+      placeholder="Tell me your story"
+      bind:value={userStory}
+    />
+    <br />
+    <br />
+    <button on:click={handleButtonClick} style="--clr:#c377d4"
+      ><span>Enter</span><i></i></button
     >
   </div>
   <br />
@@ -57,6 +76,15 @@
     margin: auto;
     padding: 0.5em;
     border-radius: 50px;
+  }
+
+  .input-field {
+    background: linear-gradient(to right, #20051c, #46204e);
+    border-radius: 20px;
+    padding: 0.4em;
+    margin: 0 auto 2em auto;
+    border: #20051c solid 2px;
+    outline: none;
   }
 
   button {

@@ -1,6 +1,18 @@
 <script>
   import { onMount } from "svelte";
 
+  let userName = "";
+  let userStory = "";
+
+  if (typeof window !== "undefined") {
+    const urlParams = new URLSearchParams(window.location.search);
+    userName = urlParams.get("name") || "";
+    userStory = urlParams.get("userstory") || "";
+  }
+
+  console.log(userName);
+  console.log(userStory);
+
   function handleButtonClick() {
     window.location.href = "/";
   }

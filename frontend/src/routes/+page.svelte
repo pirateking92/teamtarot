@@ -1,8 +1,11 @@
 <script>
   import "../app.css";
 
+  let userName = "";
+
   function handleButtonClick() {
-    window.location.href = "/cassandra";
+    const url = `/cassandra?name=${encodeURIComponent(userName)}`;
+    window.location.href = url;
   }
 </script>
 
@@ -11,6 +14,14 @@
   <div class="intro-text">
     <h1>Ah, I've been expecting you, seeker. My name is Cassandra.</h1>
     <br /><br />
+    <h1>What is your name?</h1>
+    <br /><br />
+    <input
+      class="input-field"
+      placeholder="Enter your name"
+      bind:value={userName}
+    />
+    <br /><br /><br />
     <button on:click={handleButtonClick} style="--clr:#c377d4"
       ><span>Follow Cassandra</span><i></i></button
     >
