@@ -1,15 +1,40 @@
 <script>
   import { onMount } from "svelte";
-  import { goto } from '$app/navigation'; 
 
   let threeCards = [];
   let requestID = null;
   let isLoading = true;
   let error = null;
+  let interpretation = null;
+  let showInterpretation = false;
 
   function handleButtonClick() {
-    // Navigate to the interpretation page
-    goto(`/cards/interpret/${requestID}`);
+    window.location.href = "/";
+  }
+
+
+
+  async function getFate() {
+    try {
+      let data;
+      do {
+        const res = await fetch(
+          `http://localhost:8082/cards/interpret/${requestID}`
+        );
+        data = await res.json();
+        if (data.interpretation) {
+          interpretation = data.interpretation;
+        } else {
+          // Wait for 1 second before trying again
+          await new Promise((resolve) => setTimeout(resolve, 1000));
+        }
+      } while (!data.interpretation);
+    } catch (err) {
+      error = err.message;
+      console.error("Error:", err);
+    } finally {
+      showInterpretation = true;
+    }
   }
 
   onMount(async () => {
@@ -17,7 +42,7 @@
       const res = await fetch(`http://localhost:8082/cards`);
       const data = await res.text();
       threeCards = JSON.parse(data).cards;
-      requestID = JSON.parse(data).requestID; 
+      requestID = JSON.parse(data).requestID;
     } catch (err) {
       error = err.message;
       console.error("Error:", err);
@@ -25,10 +50,8 @@
       isLoading = false;
     }
   });
+
 </script>
-
-
-
 
 <link
   href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
@@ -45,10 +68,14 @@
   </div>
 
   {#if isLoading}
+  <div>
     <p>Loading...</p>
+  </div>
+
   {:else if error}
     <p class="text-red-500">Error: {error}</p>
   {:else}
+    {#if !showInterpretation}
     <div class="mx-auto px-20">
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4 ml-12 mr-12">
         {#each threeCards as card, index}
@@ -91,9 +118,16 @@
           </div>
         {/each}
       </div>
+      <button on:click={getFate} class="mx-auto mt-8 block" style="--clr:#c377d4"
+      ><span>Get Fate</span><i></i></button
+    >
     </div>
+    {:else}
+    <div class="mt-4 bg-card-container shadow-md p-4 rounded-lg">
+      <p>{interpretation}</p>
+    </div>
+    {/if}
   {/if}
-  <button on:click={handleButtonClick} class="mx-auto mt-8 block" style="--clr:#c377d4"><span>Get Fate</span><i></i></button>
 </div>
 
 <style>
