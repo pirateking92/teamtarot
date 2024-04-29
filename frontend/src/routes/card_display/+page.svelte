@@ -12,8 +12,6 @@
     window.location.href = "/";
   }
 
-
-
   async function getFate() {
     try {
       let data;
@@ -34,6 +32,7 @@
       console.error("Error:", err);
     } finally {
       showInterpretation = true;
+      isLoading = false;
     }
   }
 
@@ -47,7 +46,7 @@
       error = err.message;
       console.error("Error:", err);
     } finally {
-      isLoading = false;
+      getFate()
     }
   });
 
@@ -71,12 +70,10 @@
   <div>
     <p>Loading...</p>
   </div>
-
   {:else if error}
-    <p class="text-red-500">Error: {error}</p>
+  <p class="text-red-500">Error: {error}</p>
   {:else}
-    {#if !showInterpretation}
-    <div class="mx-auto px-20">
+  <div class="mx-auto px-20">
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4 ml-12 mr-12">
         {#each threeCards as card, index}
           <div class="bg-card-container shadow-md p-4 rounded-lg">
@@ -118,15 +115,10 @@
           </div>
         {/each}
       </div>
-      <button on:click={getFate} class="mx-auto mt-8 block" style="--clr:#c377d4"
-      ><span>Get Fate</span><i></i></button
-    >
-    </div>
-    {:else}
-    <div class="mt-4 bg-card-container shadow-md p-4 rounded-lg">
+  </div>
+  <div class="mt-4 bg-card-container shadow-md p-4 rounded-lg">
       <p>{interpretation}</p>
-    </div>
-    {/if}
+  </div>
   {/if}
 </div>
 
