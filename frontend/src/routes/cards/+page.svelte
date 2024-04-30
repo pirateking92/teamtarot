@@ -566,7 +566,7 @@
   .flip-card {
     background-color: transparent;
     width: 330px;
-    height: 320px;
+    height: 340px; /* the max this can be without distorting the grid */
     perspective: 1000px; /* Remove this if you don't want the 3D effect */
   }
 

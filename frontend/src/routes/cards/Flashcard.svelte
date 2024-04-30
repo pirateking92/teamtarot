@@ -7,13 +7,13 @@
 <div class="flip-card-inner" class:flip-it={flipped}>
     <div class="flip-card-front">
         <div id="image-cont">
-            <img src={cardBack} alt={"Back of tarot card"} />
+            <img src={flipped ? cardFront : cardBack} alt={"Back of tarot card"} />
         </div>
     </div>
 
     <div class="flip-card-back">
         <div id="image-cont">
-            <img src={cardFront} alt={"Front of tarot card"} />
+            <img src={cardBack} alt={"Front of tarot card"} />
         </div>
     </div>
 </div>
@@ -34,6 +34,7 @@
         color: black;
         display: flex;
         justify-content: center;
+        transform: scaleX(-1);
     }
 
     @keyframes revealTextSlowly {
@@ -41,6 +42,11 @@
             color: white;
         }
     }
+
+    /* .conceal-front {
+		animation: revealTextSlowly .9s forwards;
+	} */
+
 
     /* Style the back side */
     .flip-card-back {
