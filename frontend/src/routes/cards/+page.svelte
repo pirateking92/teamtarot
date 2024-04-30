@@ -126,12 +126,12 @@
       <div
         class="grid grid-cols-3 md:grid-cols-3 gap-4 ml-12 mr-12"
         style="grid-template-columns: 1fr 1fr 1fr;
+        grid-template-rows: 0.4fr 0.5fr 0.5fr 0.4fr 0.3fr 0.3fr;
         grid-template-areas: 
         '.......... card-present-1 ..............'
         'card-past-0 card-present-1 card-future-2'
         'card-past-0 card-present-1 card-future-2'
         'card-past-0 deck card-future-2'
-        '........... deck .............'
         '........... deck .............'
         '........... button ...........'"
       >
@@ -151,11 +151,13 @@
               <!-- <h2 class="text-xl font-semibold mb-2">
                   <span>Past</span>
                 </h2> -->
-              <h2 class="text-xl font-semibold mb-2">{card.name}</h2>
-              <p class="text-#fed7aa-600 mb-2">Type: {card.type}</p>
+              {#if flipped[index]}
+                <h2 class="text-xl font-semibold mb-2">{card.name}</h2>
+                <p class="text-#fed7aa-600 mb-2">Type: {card.type}</p>
+              {/if}
               <div class="flip-card">
                 <div class="flip-card-inner" class:flip-it={flipped[index]}>
-                  <div on:click={handleCardClick(index)}>
+                  <div on:click={() => handleCardClick(index)}>
                     <Flashcard
                       cardBack={`src/lib/assets/tarot_back.png`}
                       cardFront={`src/lib/assets/${card.image_file_name}`}
@@ -385,7 +387,6 @@
     opacity: 80%;
     padding: 0.25em;
     box-shadow: 0 0 20px 10px rgba(197, 126, 34, 0.5);
-    border: 2px green solid;
   }
 
   .deck-image {
@@ -434,7 +435,7 @@
     font-size: 1.6rem;
     width: 15em;
     padding: 0.5em 0;
-    margin: 0.5em 0 1em 0;
+    margin: auto;
     max-height: 3em;
     align-self: flex-end;
   }
@@ -564,9 +565,8 @@
 
   .flip-card {
     background-color: transparent;
-    width: 400px;
-    height: 300px;
-    /* 		border: 1px solid #ddd; */
+    width: 330px;
+    height: 320px;
     perspective: 1000px; /* Remove this if you don't want the 3D effect */
   }
 
