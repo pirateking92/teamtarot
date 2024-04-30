@@ -1,6 +1,8 @@
 package main
 
 import (
+	"os"
+
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"main.go/env"
@@ -13,7 +15,13 @@ func main() {
 	// if the above line is not called in main.go the App will always run in debug mode
 	// and detailed errors will be shown to the user.
 	env.LoadEnv()
+	mode := os.Getenv("GIN_MODE")
+	if mode == "" {
+		mode = gin.ReleaseMode
+	}
+	gin.SetMode(mode)
 	app := setupApp()
+
 	app.Run(":8082")
 }
 
