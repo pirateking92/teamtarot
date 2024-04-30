@@ -157,7 +157,12 @@
               {/if}
               <div class="flip-card">
                 <div class="flip-card-inner" class:flip-it={flipped[index]}>
-                  <div on:click={() => handleCardClick(index)}>
+                  <div
+                    on:click={() => handleCardClick(index)}
+                    on:keydown={(event) => {}}
+                    tabindex="0"
+                    role="button"
+                  >
                     <Flashcard
                       cardBack={`src/lib/assets/tarot_back.png`}
                       cardFront={`src/lib/assets/${card.image_file_name}`}
@@ -222,34 +227,25 @@
                 <span>Future</span>
               </h2>
               {#if flipped[index]}
-                <!-- <h2 class="text-xl font-semibold mb-2">
-                <span>Future</span>
-              </h2> -->
                 <h2 class="text-xl font-semibold mb-2">{card.name}</h2>
                 <p class="text-#fed7aa-600 mb-2">Type: {card.type}</p>
-                {#if card.reversed}
-                  <img
-                    src={`src/lib/assets/${card.image_file_name}`}
-                    alt={card.name}
-                    class="mb-2 rounded-lg card-image"
-                    style="transform: rotate(180deg);"
-                  />
-                {:else}
-                  <img
-                    src={`src/lib/assets/${card.image_file_name}`}
-                    alt={card.name}
-                    class="mb-2 rounded-lg card-image"
-                  />
-                {/if}
-              {:else}
-                <button on:click={() => handleCardClick(index)}>
-                  <img
-                    src={`src/lib/assets/tarot_back.png`}
-                    alt="back-tarot-card"
-                    class="mb-2 rounded-lg card-image"
-                  />
-                </button>
               {/if}
+              <div class="flip-card">
+                <div class="flip-card-inner" class:flip-it={flipped[index]}>
+                  <div
+                    on:click={() => handleCardClick(index)}
+                    on:keydown={(event) => {}}
+                    tabindex="0"
+                    role="button"
+                  >
+                    <Flashcard
+                      cardBack={`src/lib/assets/tarot_back.png`}
+                      cardFront={`src/lib/assets/${card.image_file_name}`}
+                      flipped={flipped[index]}
+                    />
+                  </div>
+                </div>
+              </div>
               {#if flipped[index]}
                 {#if card.reversed}
                   <p class="text-#fed7aa-600 mb-2">
@@ -283,34 +279,25 @@
                 <span>Present</span>
               </h2>
               {#if flipped[index]}
-                <!-- <h2 class="text-xl font-semibold mb-2">
-                  <span>Present</span>
-                </h2> -->
                 <h2 class="text-xl font-semibold mb-2">{card.name}</h2>
                 <p class="text-#fed7aa-600 mb-2">Type: {card.type}</p>
-                {#if card.reversed}
-                  <img
-                    src={`src/lib/assets/${card.image_file_name}`}
-                    alt={card.name}
-                    class="mb-2 rounded-lg card-image"
-                    style="transform: rotate(180deg);"
-                  />
-                {:else}
-                  <img
-                    src={`src/lib/assets/${card.image_file_name}`}
-                    alt={card.name}
-                    class="mb-2 rounded-lg card-image"
-                  />
-                {/if}
-              {:else}
-                <button on:click={() => handleCardClick(index)}>
-                  <img
-                    src={`src/lib/assets/tarot_back.png`}
-                    alt="back-tarot-card"
-                    class="mb-2 rounded-lg card-image"
-                  />
-                </button>
               {/if}
+              <div class="flip-card">
+                <div class="flip-card-inner" class:flip-it={flipped[index]}>
+                  <div
+                    on:click={() => handleCardClick(index)}
+                    on:keydown={(event) => {}}
+                    tabindex="0"
+                    role="button"
+                  >
+                    <Flashcard
+                      cardBack={`src/lib/assets/tarot_back.png`}
+                      cardFront={`src/lib/assets/${card.image_file_name}`}
+                      flipped={flipped[index]}
+                    />
+                  </div>
+                </div>
+              </div>
               {#if flipped[index]}
                 {#if card.reversed}
                   <p class="text-#fed7aa-600 mb-2">
@@ -377,16 +364,6 @@
     color: whitesmoke;
     font-family: MedievalSharp, Arial, Helvetica, sans-serif;
     opacity: 70%;
-  }
-
-  .card-image {
-    max-width: 200px; /* Set the desired maximum width */
-    max-height: 300px; /* Set the desired maximum height */
-    display: block;
-    margin: 1em auto;
-    opacity: 80%;
-    padding: 0.25em;
-    box-shadow: 0 0 20px 10px rgba(197, 126, 34, 0.5);
   }
 
   .deck-image {

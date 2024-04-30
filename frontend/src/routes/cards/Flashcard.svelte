@@ -6,8 +6,11 @@
 
 <div class="flip-card-inner" class:flip-it={flipped}>
     <div class="flip-card-front">
-        <div id="image-cont">
-            <img src={flipped ? cardFront : cardBack} alt={"Back of tarot card"} />
+        <div id="image-cont" class:reveal-delay={flipped}>
+            <img
+                src={flipped ? cardFront : cardBack}
+                alt={"Front of tarot card"}
+            />
         </div>
     </div>
 
@@ -37,16 +40,20 @@
         transform: scaleX(-1);
     }
 
-    @keyframes revealTextSlowly {
-        to {
-            color: white;
+    @keyframes delayReveal {
+        0% {
+            opacity: 0;
+        }
+        70% {
+            opacity: 0.3;
+        }
+        100% {
+            opacity: 1;
         }
     }
-
-    /* .conceal-front {
-		animation: revealTextSlowly .9s forwards;
-	} */
-
+    .reveal-delay {
+        animation: delayReveal 0.4s linear;
+    }
 
     /* Style the back side */
     .flip-card-back {
