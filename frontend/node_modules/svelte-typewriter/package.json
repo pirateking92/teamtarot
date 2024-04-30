@@ -1,0 +1,69 @@
+{
+  "name": "svelte-typewriter",
+  "description": "A simple and reusable typewriter effect for your Svelte applications",
+  "keywords": [
+    "svelte",
+    "typewriter-effect"
+  ],
+  "homepage": "https://sr.ht/~henriquehbr/svelte-typewriter",
+  "repository": {
+    "type": "git",
+    "url": "https://git.sr.ht/~henriquehbr/svelte-typewriter"
+  },
+  "bugs": {
+    "url": "https://todo.sr.ht/~henriquehbr/svelte-typewriter",
+    "email": "henriqueborgeshbr@gmail.com"
+  },
+  "version": "3.2.3",
+  "main": "./package/Typewriter.svelte",
+  "type": "module",
+  "author": {
+    "name": "Henrique Borges",
+    "email": "henriqueborgeshbr@gmail.com"
+  },
+  "license": "MIT",
+  "files": [
+    "package"
+  ],
+  "devDependencies": {
+    "@sveltejs/adapter-static": "^2.0.3",
+    "@sveltejs/kit": "^1.26.0",
+    "@sveltejs/package": "^2.2.2",
+    "husky": "^8.0.3",
+    "prettier": "^3.0.3",
+    "prettier-plugin-svelte": "^3.0.3",
+    "svelte": "^4.2.2",
+    "svelte-check": "^3.5.2",
+    "svelte2tsx": "^0.6.23",
+    "typescript": "^5.2.2",
+    "vite": "^4.5.0"
+  },
+  "peerDependencies": {
+    "svelte": ">=3.47.x"
+  },
+  "exports": {
+    ".": {
+      "types": "./package/index.d.ts",
+      "svelte": "./package/index.js"
+    }
+  },
+  "typesVersions": {
+    ">4.0": {
+      "svelte-typewriter": [
+        "./package/index.d.ts"
+      ]
+    }
+  },
+  "dependencies": {
+    "@formatjs/intl-segmenter": "^11.5.3"
+  },
+  "scripts": {
+    "dev": "vite dev",
+    "build": "vite build",
+    "preview": "vite preview",
+    "deploy-demo": "./deploy-demo",
+    "release": "docker run --rm -t -v $PWD:/repo henriquehbr/tagit:0.7.0-node ./bump-package-json",
+    "prettier": "prettier --write \"./src/**/*.js\"",
+    "prepublish": "svelte-package -o package"
+  }
+}
