@@ -24,10 +24,10 @@ Team Tarot is a tarot card reading application that, when the user is ready, wil
 
 ## Installation
 To run Team Tarot locally, you'll need to install:
-
-- Golang 
-- Gin Framework 
-- SvelteKit 
+- [Golang](https://go.dev/) 
+- [Gin Framework](https://go.dev/doc/modules/) 
+- [SvelteKit](https://github.com/sveltejs/kit) 
+- [Node](https://nodejs.org/en)
 
 
 ## Usage
@@ -35,7 +35,7 @@ To run Team Tarot locally, you'll need to install:
 
 2. Go to the project directory `cd teamtarot`
 
-3. Install dependencies `npm install`
+3. Install dependencies `npm install ` 
 
 4. Run the backend server `go run main.go`
 
@@ -51,7 +51,7 @@ To run Team Tarot locally, you'll need to install:
 
 
 ## Technologies Used
-- GoLang is used for the backend with a Gin framework to handle HTTP requests.
+- GoLang is used for the backend with a Gin framework to handle HTTP requests. 
 - SvelteKit is used for the frontend, requiring that node.js be installed.
 - Tailwind CSS library is used for styling
 
