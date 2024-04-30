@@ -64,7 +64,7 @@ Frontend
 
 Backend 
 - controllers: This directory hold the logic behing incomming HTTP requests, interacts with models and generates responses 
-- env: Holds functionality for loading environment variables for one or more files
+- env: Holds functionality for loading environment variables
 - models: Defines the properties of the tarot cards allowing for manipulaton of the tarot cards within the application 
 - routes: This contains files that define API endpoints and map them to corresponding controllers 
 - services: Holds functions for fetching tarot card data from an external API and interpreting them using the OpenAI API 
