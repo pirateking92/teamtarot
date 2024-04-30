@@ -10,6 +10,7 @@ import (
 	"github.com/google/uuid"
 
 	"github.com/gin-gonic/gin"
+	"main.go/errors"
 	"main.go/models"
 	"main.go/services"
 )
@@ -43,7 +44,7 @@ func GetRandomCard(deck []models.Card, currentCards []models.Card) models.Card {
 func GetandInterpretThreeCards(ctx *gin.Context) {
 	deck, err := services.FetchTarotCards() //returns a type of []Card
 	if err != nil {
-		SendInternalError(ctx, err)
+		errors.SendInternalError(ctx, err)
 		return
 	}
 	requestID := uuid.New()
@@ -98,7 +99,7 @@ func GetandInterpretThreeCards(ctx *gin.Context) {
 		apiKey := os.Getenv("API_KEY")
 		interpretation, err := services.InterpretTarotCards(apiKey, cardNames, requestID)
 		if err != nil {
-			SendInternalError(ctx, err)
+			errors.SendInternalError(ctx, err)
 			return
 		}
 		LocalStorage[requestID.String()] = interpretation

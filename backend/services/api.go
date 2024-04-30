@@ -9,6 +9,7 @@ import (
 	"strings"
 
 	"github.com/google/uuid"
+	"main.go/errors"
 	"main.go/models"
 )
 
@@ -21,7 +22,7 @@ func FetchTarotCards() ([]models.Card, error) {
 	// Send GET request to the API
 	resp, err := http.Get(apiUrl)
 	if err != nil {
-		return nil, fmt.Errorf("failed to make GET request: %v", err)
+		errors.SendInternalError(nil, fmt.Errorf("failed to make GET request: %v", err))
 	}
 	defer resp.Body.Close()
 

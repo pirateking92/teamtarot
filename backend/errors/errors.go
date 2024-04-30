@@ -1,8 +1,9 @@
-package controllers
+package errors
 
 import (
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 // This function is designed to handle internal server errors within
