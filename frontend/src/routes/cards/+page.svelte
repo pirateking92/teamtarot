@@ -169,15 +169,15 @@
                     {#if card.reversed}
                       <span style="transform: rotate(180deg)">
                         <Flashcard
-                          cardBack={`$app/assets/tarot_back.png`}
-                          cardFront={`$app/assets/${card.image_file_name}`}
+                          cardBack={`$app/assets/assets/tarot_back.png`}
+                          cardFront={`$app/assets/assets/${card.image_file_name}`}
                           flipped={flipped[index]}
                         />
                       </span>
                     {:else}
                       <Flashcard
-                        cardBack={`$app/assets/tarot_back.png`}
-                        cardFront={`$app/assets/${card.image_file_name}`}
+                        cardBack={`$app/assets/assets/tarot_back.png`}
+                        cardFront={`$app/assets/assets/${card.image_file_name}`}
                         flipped={flipped[index]}
                       />
                     {/if}
