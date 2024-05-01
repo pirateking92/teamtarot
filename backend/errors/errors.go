@@ -1,8 +1,10 @@
-package controllers
+package errors
 
 import (
-	"github.com/gin-gonic/gin"
+	"fmt"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 // This function is designed to handle internal server errors within
@@ -18,6 +20,11 @@ import (
 // and detailed errors will be shown to the user.
 
 func SendInternalError(ctx *gin.Context, err error) {
+	if ctx == nil {
+		// Handle the case where the context is nil
+		fmt.Printf("Internal Server Error: %v\n", err)
+		return
+	}
 	// The gin.Context object represents the HTTP request and response
 	// context, while the error object contains information about the
 	// error that occurred.

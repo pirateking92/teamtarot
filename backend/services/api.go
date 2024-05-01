@@ -9,6 +9,7 @@ import (
 	"strings"
 
 	"github.com/google/uuid"
+	"main.go/errors"
 	"main.go/models"
 )
 
@@ -21,7 +22,7 @@ func FetchTarotCards() ([]models.Card, error) {
 	// Send GET request to the API
 	resp, err := http.Get(apiUrl)
 	if err != nil {
-		return nil, fmt.Errorf("failed to make GET request: %v", err)
+		errors.SendInternalError(nil, fmt.Errorf("failed to make GET request: %v", err))
 	}
 	defer resp.Body.Close()
 
@@ -30,7 +31,7 @@ func FetchTarotCards() ([]models.Card, error) {
 		Cards []models.Card `json:"cards"`
 	}
 	if err := json.NewDecoder(resp.Body).Decode(&cardsResponse); err != nil {
-		return nil, fmt.Errorf("failed to decode JSON response: %v", err)
+		errors.SendInternalError(nil, fmt.Errorf("failed to decode JSON response: %v", err))
 	}
 
 	return cardsResponse.Cards, nil
@@ -47,7 +48,7 @@ func InterpretTarotCards(apiKey string, cards []string, RequestID uuid.UUID) (st
 
 	req, err := http.NewRequest("POST", "https://api.openai.com/v1/completions", strings.NewReader(payload))
 	if err != nil {
-		return "", fmt.Errorf("error creating request: %v", err)
+		errors.SendInternalError(nil, fmt.Errorf("error creating request: %v", err))
 	}
 
 	req.Header.Set("Authorization", "Bearer "+apiKey)
@@ -55,13 +56,13 @@ func InterpretTarotCards(apiKey string, cards []string, RequestID uuid.UUID) (st
 
 	resp, err := client.Do(req)
 	if err != nil {
-		return "", fmt.Errorf("error sending request: %v", err)
+		errors.SendInternalError(nil, fmt.Errorf("error sending request: %v", err))
 	}
 	defer resp.Body.Close()
 
 	var responseBody strings.Builder
 	if _, err := io.Copy(&responseBody, resp.Body); err != nil {
-		return "", fmt.Errorf("error reading response body: %v", err)
+		errors.SendInternalError(nil, fmt.Errorf("error reading response body: %v", err))
 	}
 
 	type Response struct {
@@ -73,7 +74,7 @@ func InterpretTarotCards(apiKey string, cards []string, RequestID uuid.UUID) (st
 	var response Response
 	fmt.Println(response)
 	if err := json.Unmarshal([]byte(responseBody.String()), &response); err != nil {
-		return "", fmt.Errorf("error unmarshaling response: %v", err)
+		errors.SendInternalError(nil, fmt.Errorf("error unmarshaling response: %v", err))
 
 	}
 
