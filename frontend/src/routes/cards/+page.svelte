@@ -42,7 +42,7 @@
       let data;
       do {
         const res = await fetch(
-          `http://localhost:8082/cards/interpret/${requestID}`,
+          `https://teamtarot.onrender.com/cards/interpret/${requestID}`
         );
         data = await res.json();
         if (data.interpretation) {
@@ -78,7 +78,7 @@
 
     try {
       const res = await fetch(
-        `http://localhost:8082/cards?name=${userName}&userstory=${userStory}`,
+        `https://teamtarot.onrender.com/cards?name=${userName}&userstory=${userStory}`
       );
       const data = await res.text();
       threeCards = JSON.parse(data).cards;
