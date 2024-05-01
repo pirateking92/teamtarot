@@ -176,8 +176,8 @@
                       </span>
                     {:else}
                       <Flashcard
-                        cardBack={`src/lib/assets/tarot_back.png`}
-                        cardFront={`src/lib/assets/${card.image_file_name}`}
+                        cardBack={`$app/assets/tarot_back.png`}
+                        cardFront={`$app/assets/${card.image_file_name}`}
                         flipped={flipped[index]}
                       />
                     {/if}
