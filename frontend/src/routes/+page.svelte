@@ -57,16 +57,20 @@
 <style>
   @import url("https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap");
 
-  :global(html, body) {
-    margin: 0;
-    padding: 0;
+  :global(html) {
     background-image: url("../lib/assets/0-town.jpeg");
     background-size: cover; /* Adjust as needed */
     background-position: center; /* Adjust as needed */
+    background-repeat: no-repeat;
+    height: 100%;
+  }
+
+  :global(body) {
+    margin: 0;
+    padding: 0;
     font-family: MedievalSharp, Arial, Helvetica, sans-serif;
     color: rgb(197, 176, 176);
   }
-
   .container {
     display: flex;
     margin: 5em;

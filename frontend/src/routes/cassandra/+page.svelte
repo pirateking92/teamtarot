@@ -12,10 +12,10 @@
     // Simulating typewriter effect completion after 5 seconds
     setTimeout(() => {
       typewriterFinished = true;
-    }, 21000);
+    }, 23000);
     setTimeout(() => {
       inputFieldAppeared = true;
-    }, 26000);
+    }, 27000);
   });
 
   if (typeof window !== "undefined") {
@@ -47,9 +47,13 @@
     </Typewriter>
     <Typewriter delay={12000} interval={75}>
       <p>
-        I will draw three cards for you, but tell me, what has been tormenting
-        you?
+        In order to do this, we will draw three cards, representing Past,
+        Present and Future.
       </p>
+    </Typewriter>
+    <br />
+    <Typewriter delay={20000} interval={75}>
+      <p>But now tell me, what has been tormenting you?</p>
     </Typewriter>
     <br />
     {#if typewriterFinished}
@@ -74,12 +78,17 @@
 <style>
   @import url("https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap");
 
-  :global(html, body) {
-    margin: 0;
-    padding: 0;
+  :global(html) {
     background-image: url("../../lib/assets/1-alley.png");
     background-size: cover; /* Adjust as needed */
     background-position: center; /* Adjust as needed */
+    background-repeat: no-repeat;
+    height: 100%;
+  }
+
+  :global(body) {
+    margin: 0;
+    padding: 0;
     font-family: MedievalSharp, Arial, Helvetica, sans-serif;
     color: rgb(197, 176, 176);
   }

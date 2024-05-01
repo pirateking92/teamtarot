@@ -75,9 +75,9 @@
     }
 
     img {
-        max-height: 80%;
-        box-shadow: 0 0 25px 12px rgba(197, 126, 34, 0.5);
+        max-height: 88%;
+        padding: 0.25em;
+        box-shadow: 0 0 20px 10px rgba(197, 126, 34, 0.5);
         border-radius: 10px;
-        border: 3px rgb(97, 35, 9) solid;
     }
 </style>

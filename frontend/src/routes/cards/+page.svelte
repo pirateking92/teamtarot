@@ -16,6 +16,8 @@
   let loadCard3 = false;
   let showButton = false;
   let flipped = [false, false, false];
+  let showDeck = true;
+  let showGuide = true;
 
   function handleButtonClick() {
     window.location.href = "/";
@@ -61,16 +63,18 @@
   onMount(async () => {
     setTimeout(() => {
       loadCard1 = true;
-    }, 0);
+      showGuide = false;
+    }, 4000);
     setTimeout(() => {
       loadCard2 = true;
-    }, 0);
+    }, 5000);
     setTimeout(() => {
       loadCard3 = true;
-    }, 0);
+      showDeck = false;
+    }, 6000);
     setTimeout(() => {
       showButton = true;
-    }, 0);
+    }, 8000);
 
     try {
       const res = await fetch(
@@ -124,16 +128,15 @@
   {:else if !showInterpretation}
     <div class="three-cards-container mx-auto px-20">
       <div
-        class="grid grid-cols-3 md:grid-cols-3 gap-4 ml-12 mr-12"
+        class="grid grid-cols-3 md:grid-cols-3 gap-4"
         style="grid-template-columns: 1fr 1fr 1fr;
-        grid-template-rows: 0.4fr 0.5fr 0.5fr 0.4fr 0.3fr 0.3fr;
+        grid-template-rows: 0.1fr 0.3fr 0.3fr 0.1fr 0.3fr;
         grid-template-areas: 
-        '.......... card-present-1 ..............'
+        'button card-present-1 guide'
         'card-past-0 card-present-1 card-future-2'
         'card-past-0 card-present-1 card-future-2'
         'card-past-0 deck card-future-2'
-        '........... deck .............'
-        '........... button ...........'"
+        '........... deck .............'"
       >
         {#each threeCards as card, index}
           {#if index === 0 && loadCard1}
@@ -153,7 +156,7 @@
                 </h2> -->
               {#if flipped[index]}
                 <h2 class="text-xl font-semibold mb-2">{card.name}</h2>
-                <p class="text-#fed7aa-600 mb-2">Type: {card.type}</p>
+                <!-- <p class="text-#fed7aa-600 mb-2">Type: {card.type}</p> -->
               {/if}
               <div class="flip-card">
                 <div class="flip-card-inner" class:flip-it={flipped[index]}>
@@ -163,11 +166,21 @@
                     tabindex="0"
                     role="button"
                   >
-                    <Flashcard
-                      cardBack={`src/lib/assets/tarot_back.png`}
-                      cardFront={`src/lib/assets/${card.image_file_name}`}
-                      flipped={flipped[index]}
-                    />
+                    {#if card.reversed}
+                      <span style="transform: rotate(180deg)">
+                        <Flashcard
+                          cardBack={`src/lib/assets/tarot_back.png`}
+                          cardFront={`src/lib/assets/${card.image_file_name}`}
+                          flipped={flipped[index]}
+                        />
+                      </span>
+                    {:else}
+                      <Flashcard
+                        cardBack={`src/lib/assets/tarot_back.png`}
+                        cardFront={`src/lib/assets/${card.image_file_name}`}
+                        flipped={flipped[index]}
+                      />
+                    {/if}
                   </div>
                 </div>
               </div>
@@ -196,7 +209,7 @@
               <!-- {/if} -->
               {#if flipped[index]}
                 {#if card.reversed}
-                  <p class="text-#fed7aa-600 mb-2">
+                  <p class="meaning-text text-#fed7aa-600 mb-2">
                     Meaning Reversed:
                     {#if card.meaning_rev.length > 90}
                       {card.meaning_rev.slice(0, 90) + "..."}
@@ -205,7 +218,7 @@
                     {/if}
                   </p>
                 {:else}
-                  <p class="text-#fed7aa-600 mb-2">
+                  <p class="meaning-text text-#fed7aa-600 mb-2">
                     Meaning Upright:
                     {#if card.meaning_up.length > 90}
                       {card.meaning_up.slice(0, 90) + "..."}
@@ -228,7 +241,7 @@
               </h2>
               {#if flipped[index]}
                 <h2 class="text-xl font-semibold mb-2">{card.name}</h2>
-                <p class="text-#fed7aa-600 mb-2">Type: {card.type}</p>
+                <!-- <p class="text-#fed7aa-600 mb-2">Type: {card.type}</p> -->
               {/if}
               <div class="flip-card">
                 <div class="flip-card-inner" class:flip-it={flipped[index]}>
@@ -248,7 +261,7 @@
               </div>
               {#if flipped[index]}
                 {#if card.reversed}
-                  <p class="text-#fed7aa-600 mb-2">
+                  <p class="meaning-text text-#fed7aa-600 mb-2">
                     Meaning Reversed:
                     {#if card.meaning_rev.length > 90}
                       {card.meaning_rev.slice(0, 90) + "..."}
@@ -257,7 +270,7 @@
                     {/if}
                   </p>
                 {:else}
-                  <p class="text-#fed7aa-600 mb-2">
+                  <p class="meaning-text text-#fed7aa-600 mb-2">
                     Meaning Upright:
                     {#if card.meaning_up.length > 90}
                       {card.meaning_up.slice(0, 90) + "..."}
@@ -280,7 +293,7 @@
               </h2>
               {#if flipped[index]}
                 <h2 class="text-xl font-semibold mb-2">{card.name}</h2>
-                <p class="text-#fed7aa-600 mb-2">Type: {card.type}</p>
+                <!-- <p class="text-#fed7aa-600 mb-2">Type: {card.type}</p> -->
               {/if}
               <div class="flip-card">
                 <div class="flip-card-inner" class:flip-it={flipped[index]}>
@@ -300,7 +313,7 @@
               </div>
               {#if flipped[index]}
                 {#if card.reversed}
-                  <p class="text-#fed7aa-600 mb-2">
+                  <p class="meaning-text text-#fed7aa-600 mb-2">
                     Meaning Reversed:
                     {#if card.meaning_rev.length > 90}
                       {card.meaning_rev.slice(0, 90) + "..."}
@@ -309,7 +322,7 @@
                     {/if}
                   </p>
                 {:else}
-                  <p class="text-#fed7aa-600 mb-2">
+                  <p class="meaning-text text-#fed7aa-600 mb-2">
                     Meaning Upright:
                     {#if card.meaning_up.length > 90}
                       {card.meaning_up.slice(0, 90) + "..."}
@@ -322,13 +335,14 @@
             </div>
           {/if}
         {/each}
-
-        <img
-          src={`src/lib/assets/tarot_deck.png`}
-          alt="deck"
-          class="mb-2 rounded-lg deck-image"
-          style="grid-area: deck;"
-        />
+        {#if showDeck}
+          <img
+            src={`src/lib/assets/tarot_deck.png`}
+            alt="deck"
+            class="mb-2 rounded-lg deck-image"
+            style="grid-area: deck;"
+          />
+        {/if}
         {#if showButton}
           <button
             on:click={getFate}
@@ -338,10 +352,19 @@
             ><span>Ask for reading</span><i></i></button
           >
         {/if}
+        {#if showGuide}
+          <div
+            class="mx-auto mt-8 min-h-50"
+            id="guide-box"
+            style="--clr:#200505; grid-area: guide;"
+          >
+            <span>Draw three cards from the deck, {userName}</span><i></i>
+          </div>
+        {/if}
       </div>
     </div>
   {:else}
-    <div class="mt-4 bg-card-container shadow-md p-4 rounded-lg">
+    <div class="mt-4 interpretation-container shadow-md p-4 rounded-lg">
       <p class="interpretation-text">{interpretation}</p>
     </div>
   {/if}
@@ -351,11 +374,16 @@
   @import url("https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap");
 
   :global(html) {
-    margin: 0;
-    padding: 0;
     background-image: url("../../lib/assets/2-parlor.png");
     background-size: cover; /* Adjust as needed */
     background-position: center; /* Adjust as needed */
+    background-repeat: no-repeat;
+    height: 100%;
+  }
+
+  :global(body) {
+    margin: 0;
+    padding: 0;
     font-family: MedievalSharp, Arial, Helvetica, sans-serif;
     color: rgb(197, 176, 176);
   }
@@ -367,23 +395,32 @@
   }
 
   .deck-image {
-    max-width: 200px; /* Set the desired maximum width */
-    max-height: 300px; /* Set the desired maximum height */
-    display: block;
-    margin: 1em auto;
-    padding: 0.25em;
+    max-width: 160px; /* Set the desired maximum width */
+    max-height: 270px; /* Set the desired maximum height */
+    border: 0.25em rgb(50, 17, 3) solid;
     box-shadow: 0 0 20px 10px rgba(197, 126, 34, 0.5);
-    border: 2px green solid;
+    transition: 0.2s;
+    align-self: center;
+    justify-self: center;
+    margin: 5em 0 0 0;
+    animation: box 2s infinite;
+  }
+
+  .deck-image::before {
+    content: "";
+    position: absolute;
+    inset: 2px;
+    background: linear-gradient(
+      to right,
+      rgba(0, 0, 0, 0.7),
+      rgba(80, 13, 2, 0.5)
+    );
+    border-radius: 20px;
   }
 
   .three-cards-container {
     min-height: 45em;
-    border: 4px solid red;
     display: grid;
-    /* grid-template-columns: auto auto auto;
-    grid-template-areas:
-      ". card-present-1 ."
-      "card-past-0 deck card-future-2"; */
   }
 
   .bg-card-container {
@@ -393,14 +430,13 @@
       rgba(80, 13, 2, 0.8)
     );
     font-family: MedievalSharp, Arial, Helvetica, sans-serif;
-    padding: 2em;
-    margin: 1em;
+    padding: 2em auto;
+    margin: 1em auto;
     text-align: center;
     border: 3px solid black;
     border-radius: 50px;
-    min-height: 37em;
+    min-height: 35em;
     align-content: center;
-    border: 3px blue solid;
   }
 
   .bg-card-container:hover {
@@ -412,9 +448,32 @@
     font-size: 1.6rem;
     width: 15em;
     padding: 0.5em 0;
-    margin: auto;
+    margin: 5em auto auto auto;
     max-height: 3em;
+    position: absolute;
+    justify-self: center;
     align-self: flex-end;
+  }
+
+  #guide-box {
+    letter-spacing: 0.16rem;
+    background: linear-gradient(
+      to right,
+      rgba(0, 0, 0, 0.9),
+      rgba(80, 13, 2, 1)
+    );
+    border-radius: 10px;
+    font-size: 1.2rem;
+    width: 15em;
+    padding: 0.5em 0;
+    margin: auto auto 1em auto;
+    max-height: 5em;
+    border: 3px solid black;
+    position: absolute;
+    justify-self: center;
+    text-align: center;
+    align-self: center;
+    font-family: MedievalSharp, Arial, Helvetica, sans-serif;
   }
 
   #get-fate-btn:hover {
@@ -425,10 +484,36 @@
     );
   }
 
+  .meaning-text {
+    max-width: 15em;
+    display: block;
+    margin: auto;
+  }
+
   .interpretation-text {
     font-size: 1.5em;
     line-height: 1.6em;
   }
+
+  .interpretation-container {
+    display: block;
+    background: linear-gradient(
+      to right,
+      rgba(0, 0, 0, 0.9),
+      rgba(80, 13, 2, 0.8)
+    );
+    font-family: MedievalSharp, Arial, Helvetica, sans-serif;
+    padding: 2em;
+    margin: 13em auto;
+    text-align: center;
+    border: 3px solid black;
+    border-radius: 50px;
+    min-height: 35em;
+    align-content: center;
+    align-self: center;
+  }
+
+  /* BUTTON STYLING BELOW */
 
   button {
     position: relative;
