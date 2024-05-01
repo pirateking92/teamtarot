@@ -1,32 +1,76 @@
 <script>
   import "../../app.css";
+  import Typewriter from "svelte-typewriter";
+  import { onMount } from "svelte";
+
+  let userName = "";
+  let userStory = "";
+  let typewriterFinished = false;
+  let inputFieldAppeared = false;
+
+  onMount(() => {
+    // Simulating typewriter effect completion after 5 seconds
+    setTimeout(() => {
+      typewriterFinished = true;
+    }, 23000);
+    setTimeout(() => {
+      inputFieldAppeared = true;
+    }, 27000);
+  });
+
+  if (typeof window !== "undefined") {
+    const urlParams = new URLSearchParams(window.location.search);
+    userName = urlParams.get("name") || "";
+  }
+
+  function handleButtonClick() {
+    const url = `/cards?name=${userName}&userstory=${encodeURIComponent(userStory)}`;
+    window.location.href = url;
+  }
 </script>
 
 <div class="container">
   <br /><br />
   <div class="intro-text">
     <p>
-      I can sense hope and fear within yourself, seeker.
-      Let me guide you through the land where fate, fortune and destiny
-      intertwine.
+      Welcome, {#if userName}{userName}{:else}seeker{/if}.
     </p>
+    <Typewriter delay={500} interval={75}>
+      <p>I can sense hope and fear within yourself.</p>
+    </Typewriter>
     <br />
-    <p>
-      But be warned - the truths we may uncover could shake the very foundations
-      of what you think you know.
-    </p>
+    <Typewriter delay={4500} interval={75}>
+      <p>
+        Let me guide you through the land where fate, fortune and destiny
+        intertwine.
+      </p>
+    </Typewriter>
+    <Typewriter delay={12000} interval={75}>
+      <p>
+        In order to do this, we will draw three cards, representing Past,
+        Present and Future.
+      </p>
+    </Typewriter>
     <br />
-    <p>
-      After this, there is no turning back. If you decide to leave - the story
-      ends, you return to your world and believe whatever you want to believe.
-      If you enter - I will show you how deep the rabbit hole goes.
-    </p>
+    <Typewriter delay={20000} interval={75}>
+      <p>But now tell me, what has been tormenting you?</p>
+    </Typewriter>
     <br />
-    <br />
-    <button
-      on:click={() => (window.location.href = "/card_display")}
-      style="--clr:#c377d4"><span>Enter</span><i></i></button
-    >
+    {#if typewriterFinished}
+      <textarea
+        class="input-field"
+        placeholder="Cassandra, I'd like to know about..."
+        bind:value={userStory}
+        style="resize: none;"
+      />
+      <br />
+      <br />
+    {/if}
+    {#if inputFieldAppeared}
+      <button on:click={handleButtonClick} style="--clr:#871616"
+        ><span>Enter the Parlor</span><i></i></button
+      >
+    {/if}
   </div>
   <br />
 </div>
@@ -34,40 +78,70 @@
 <style>
   @import url("https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap");
 
-  :global(html, body) {
+  :global(html) {
+    background-image: url("../../lib/assets/1-alley.png");
+    background-size: cover; /* Adjust as needed */
+    background-position: center; /* Adjust as needed */
+    background-repeat: no-repeat;
     height: 100%;
+  }
+
+  :global(body) {
     margin: 0;
     padding: 0;
-    background: linear-gradient(to right, #20051c, #46204e);
+    font-family: MedievalSharp, Arial, Helvetica, sans-serif;
+    color: rgb(197, 176, 176);
   }
 
   .container {
-    margin: auto;
-    color: whitesmoke;
-    padding: 0.5em;
+    display: flex;
+    margin: 5em;
+    min-height: 25em;
+    box-shadow: 0 0 1em 4px rgba(207, 49, 5, 0.5);
+    padding: 0.5em 5em;
     font-weight: 600;
-    font-family: MedievalSharp, Arial, Helvetica, sans-serif;
     font-size: 1.7rem;
-    opacity: 70%;
+    background: linear-gradient(
+      to right,
+      rgba(0, 0, 0, 0.9),
+      rgba(19, 5, 0, 0.9)
+    );
+    border-radius: 50px;
   }
 
   .intro-text {
-    max-width: 80%;
     text-align: center;
     margin: auto;
-    padding: 0.5em;
+    padding: 2em 1em;
     border-radius: 50px;
+  }
+
+  .input-field {
+    background: linear-gradient(
+      to right,
+      rgba(0, 0, 0, 0.7),
+      rgba(19, 5, 0, 0.7)
+    );
+    box-shadow: 0 0 1em 4px rgba(149, 35, 4, 0.5);
+    border-radius: 20px;
+    padding: 0.4em;
+    margin: 0 auto 2em auto;
+    border: #200505 solid 2px;
+    outline: none;
+    min-width: 20em;
+    text-align: center;
+    font-size: 1.2rem;
   }
 
   button {
     position: relative;
-    background: #1d1242;
-    color: #fff;
+    background: #200505;
+    color: rgb(197, 176, 176);
     text-decoration: none;
     text-transform: uppercase;
     border: none;
     letter-spacing: 0.2rem;
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     padding: 1.3rem 3rem;
     transition: 0.2s;
     animation: box 2s infinite;
@@ -77,8 +151,11 @@
   button:hover {
     letter-spacing: 0.3rem;
     padding: 1.3rem 3rem;
-    background: var(--clr);
-    color: var(--clr);
+    background: linear-gradient(
+      to right,
+      rgba(0, 0, 0, 0.7),
+      rgba(80, 13, 2, 0.5)
+    );
     /* box-shadow: 0 0 35px var(--clr); */
     animation: box 1.5s infinite;
   }
@@ -87,7 +164,11 @@
     content: "";
     position: absolute;
     inset: 2px;
-    background: linear-gradient(to right, #20051c, #46204e);
+    background: linear-gradient(
+      to right,
+      rgba(0, 0, 0, 0.7),
+      rgba(80, 13, 2, 0.5)
+    );
     border-radius: 20px;
   }
 

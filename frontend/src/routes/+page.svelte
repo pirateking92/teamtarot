@@ -1,19 +1,55 @@
 <script>
   import "../app.css";
+  import Typewriter from "svelte-typewriter";
+  import { onMount } from "svelte";
+
+  let userName = "";
+  let typewriterFinished = false;
+  let inputFieldAppeared = false;
+
+  onMount(() => {
+    // Simulating typewriter effect completion after 5 seconds
+    setTimeout(() => {
+      typewriterFinished = true;
+    }, 9000);
+    setTimeout(() => {
+      inputFieldAppeared = true;
+    }, 13000);
+  });
 
   function handleButtonClick() {
-    window.location.href = "/cassandra";
+    const url = `/cassandra?name=${encodeURIComponent(userName)}`;
+    window.location.href = url;
   }
 </script>
 
 <div class="container">
   <br /><br />
   <div class="intro-text">
-    <h1>Ah, I've been expecting you, seeker. My name is Cassandra.</h1>
+    <Typewriter delay={500} interval={75}>
+      <h1>Ah, I've been expecting you, seeker.</h1>
+    </Typewriter>
+    <Typewriter delay={4000} interval={75}>
+      <h1>My name is Cassandra.</h1>
+    </Typewriter>
+    <br />
+    <Typewriter delay={6000} interval={75}>
+      <h1>What's yours?</h1>
+    </Typewriter>
     <br /><br />
-    <button on:click={handleButtonClick} style="--clr:#c377d4"
-      ><span>Follow Cassandra</span><i></i></button
-    >
+    {#if typewriterFinished}
+      <input
+        class="input-field"
+        placeholder="Enter your name"
+        bind:value={userName}
+      />
+    {/if}
+    <br /><br /><br />
+    {#if inputFieldAppeared}
+      <button on:click={handleButtonClick} style="--clr:#871616"
+        ><span>Follow Cassandra</span><i></i></button
+      >
+    {/if}
   </div>
   <br />
 </div>
@@ -21,49 +57,69 @@
 <style>
   @import url("https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap");
 
-  :global(html, body) {
+  :global(html) {
+    background-image: url("../lib/assets/0-town.jpeg");
+    background-size: cover; /* Adjust as needed */
+    background-position: center; /* Adjust as needed */
+    background-repeat: no-repeat;
     height: 100%;
-    margin: 0;
-    padding: 0;
-    background: linear-gradient(to right, #20051c, #46204e);
   }
 
-  .container {
-    margin: auto;
-    color: whitesmoke;
-    padding: 0.5em;
-    font-weight: 600;
+  :global(body) {
+    margin: 0;
+    padding: 0;
     font-family: MedievalSharp, Arial, Helvetica, sans-serif;
+    color: rgb(197, 176, 176);
+  }
+  .container {
+    display: flex;
+    margin: 5em;
+    min-height: 25em;
+    box-shadow: 0 0 1em 4px rgba(207, 49, 5, 0.5);
+    padding: 0.5em 5em;
+    font-weight: 600;
     font-size: 1.7rem;
-    opacity: 70%;
+    background: linear-gradient(
+      to right,
+      rgba(0, 0, 0, 0.9),
+      rgba(19, 5, 0, 0.9)
+    );
+    border-radius: 50px;
   }
 
   .intro-text {
-    max-width: 80%;
     text-align: center;
     margin: auto;
-    padding: 0.5em;
+    padding: 2em 1em;
     border-radius: 50px;
   }
 
   .input-field {
-    background: linear-gradient(to right, #20051c, #46204e);
+    background: linear-gradient(
+      to right,
+      rgba(0, 0, 0, 0.7),
+      rgba(19, 5, 0, 0.7)
+    );
+    box-shadow: 0 0 1em 4px rgba(149, 35, 4, 0.5);
     border-radius: 20px;
     padding: 0.4em;
     margin: 0 auto 2em auto;
-    border: #20051c solid 2px;
+    border: #200505 solid 2px;
     outline: none;
+    min-width: 20em;
+    text-align: center;
+    font-size: 1.2rem;
   }
 
   button {
     position: relative;
-    background: #1d1242;
-    color: #fff;
+    background: #200505;
+    color: rgb(197, 176, 176);
     text-decoration: none;
     text-transform: uppercase;
     border: none;
     letter-spacing: 0.2rem;
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     padding: 1.3rem 3rem;
     transition: 0.2s;
     animation: box 2s infinite;
@@ -73,8 +129,11 @@
   button:hover {
     letter-spacing: 0.3rem;
     padding: 1.3rem 3rem;
-    background: var(--clr);
-    color: var(--clr);
+    background: linear-gradient(
+      to right,
+      rgba(0, 0, 0, 0.7),
+      rgba(80, 13, 2, 0.5)
+    );
     /* box-shadow: 0 0 35px var(--clr); */
     animation: box 1.5s infinite;
   }
@@ -83,7 +142,11 @@
     content: "";
     position: absolute;
     inset: 2px;
-    background: linear-gradient(to right, #20051c, #46204e);
+    background: linear-gradient(
+      to right,
+      rgba(0, 0, 0, 0.7),
+      rgba(80, 13, 2, 0.5)
+    );
     border-radius: 20px;
   }
 

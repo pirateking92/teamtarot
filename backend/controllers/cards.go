@@ -87,6 +87,9 @@ func GetandInterpretThreeCards(ctx *gin.Context) {
 	//here we send our three Cards and the requestID in JSON form to the client, to be rendered in the UI.
 
 	ctx.JSON(http.StatusOK, gin.H{"cards": jsonCards, "requestID": requestID})
+	userStory := ctx.Query("userstory")
+	userName := ctx.Query("name")
+	fmt.Print(userName, userStory)
 
 	// here we use Open AI's API to generate a reading of our three cards, we store this reading locally to return it to the user later.
 	go func() {
@@ -97,7 +100,7 @@ func GetandInterpretThreeCards(ctx *gin.Context) {
 			return
 		}
 		apiKey := os.Getenv("API_KEY")
-		interpretation, err := services.InterpretTarotCards(apiKey, cardNames, requestID)
+		interpretation, err := services.InterpretTarotCards(apiKey, cardNames, requestID, userStory, userName)
 		if err != nil {
 			errors.SendInternalError(ctx, err)
 			return
