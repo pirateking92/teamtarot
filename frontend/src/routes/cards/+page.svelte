@@ -169,15 +169,15 @@
                     {#if card.reversed}
                       <span style="transform: rotate(180deg)">
                         <Flashcard
-                          cardBack={`src/lib/assets/tarot_back.png`}
-                          cardFront={`src/lib/assets/${card.image_file_name}`}
+                          cardBack={`static/assets/tarot_back.png`}
+                          cardFront={`static/assets/${card.image_file_name}`}
                           flipped={flipped[index]}
                         />
                       </span>
                     {:else}
                       <Flashcard
-                        cardBack={`src/lib/assets/tarot_back.png`}
-                        cardFront={`src/lib/assets/${card.image_file_name}`}
+                        cardBack={`static/assets/tarot_back.png`}
+                        cardFront={`static/assets/${card.image_file_name}`}
                         flipped={flipped[index]}
                       />
                     {/if}
@@ -252,8 +252,8 @@
                     role="button"
                   >
                     <Flashcard
-                      cardBack={`src/lib/assets/tarot_back.png`}
-                      cardFront={`src/lib/assets/${card.image_file_name}`}
+                      cardBack={`static/assets/tarot_back.png`}
+                      cardFront={`static/assets/${card.image_file_name}`}
                       flipped={flipped[index]}
                     />
                   </div>
@@ -304,8 +304,8 @@
                     role="button"
                   >
                     <Flashcard
-                      cardBack={`src/lib/assets/tarot_back.png`}
-                      cardFront={`src/lib/assets/${card.image_file_name}`}
+                      cardBack={`static/assets/tarot_back.png`}
+                      cardFront={`static/assets/${card.image_file_name}`}
                       flipped={flipped[index]}
                     />
                   </div>
@@ -337,7 +337,7 @@
         {/each}
         {#if showDeck}
           <img
-            src={`src/lib/assets/tarot_deck.png`}
+            src={`static/assets/tarot_deck.png`}
             alt="deck"
             class="mb-2 rounded-lg deck-image"
             style="grid-area: deck;"
