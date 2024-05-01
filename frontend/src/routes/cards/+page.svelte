@@ -1,5 +1,6 @@
 <script>
   import { onMount } from "svelte";
+  import { fade } from "svelte/transition";
   import Typewriter from "svelte-typewriter";
   import Flashcard from "./Flashcard.svelte";
 
@@ -11,21 +12,47 @@
   let error = null;
   let interpretation = null;
   let showInterpretation = false;
-  let loadCard1 = false;
-  let loadCard2 = false;
-  let loadCard3 = false;
   let showButton = false;
   let flipped = [false, false, false];
+  let postFlip = [false, false, false];
+  let isCardVisible = [false, false, false];
   let showDeck = true;
   let showGuide = true;
+  let hovered = [false, false, false];
+
+  // function showPopup() {
+  //   document.getElementById("popup").classList.remove("hidden");
+  // }
+
+  // function hidePopup() {
+  //   document.getElementById("popup").classList.add("hidden");
+  // }
 
   function handleButtonClick() {
     window.location.href = "/";
   }
 
   function handleCardClick(index) {
-    if (flipped[index] == false) {
-      flipped[index] = !flipped[index];
+    if (isCardVisible.every((value) => value === true)) {
+      if (flipped[index] == false) {
+        flipped[index] = !flipped[index];
+      }
+      if (flipped.every((value) => value === true)) {
+        showButton = true;
+        showGuide = false;
+      }
+    }
+  }
+
+  function drawCard() {
+    for (let i = 0; i < isCardVisible.length; i++) {
+      if (isCardVisible[i] === false) {
+        isCardVisible[i] = true;
+        if (isCardVisible.every((value) => value === true)) {
+          showDeck = false;
+        }
+        break;
+      }
     }
   }
 
@@ -61,21 +88,6 @@
   }
 
   onMount(async () => {
-    setTimeout(() => {
-      loadCard1 = true;
-      showGuide = false;
-    }, 4000);
-    setTimeout(() => {
-      loadCard2 = true;
-    }, 5000);
-    setTimeout(() => {
-      loadCard3 = true;
-      showDeck = false;
-    }, 6000);
-    setTimeout(() => {
-      showButton = true;
-    }, 8000);
-
     try {
       const res = await fetch(
         `http://localhost:8082/cards?name=${userName}&userstory=${userStory}`,
@@ -83,6 +95,7 @@
       const data = await res.text();
       threeCards = JSON.parse(data).cards;
       requestID = JSON.parse(data).requestID;
+      postFlip = [false, false, false];
     } catch (err) {
       error = err.message;
       console.error("Error:", err);
@@ -111,9 +124,25 @@
 />
 <div class="container mx-auto mt-8">
   <div class="flex justify-between items-center mb-8">
-    <Typewriter delay={0} interval={75}>
-      <h3 class="text-2xl font-bold card-display-title">Cassandra's Parlor</h3>
-    </Typewriter>
+    <h3 class="text-2xl font-bold card-display-title">Cassandra's Parlor</h3>
+    {#if showGuide && isCardVisible.every((value) => value === true)}
+      <div
+        class="mx-auto mt-8 min-h-50"
+        id="guide-box"
+        style="--clr:#200505; grid-area: guide;"
+        transition:fade
+      >
+        <span>Now, flip the cards</span><i></i>
+      </div>
+    {:else if showGuide}
+      <div
+        class="mx-auto mt-8 min-h-50"
+        id="guide-box"
+        style="--clr:#200505; grid-area: guide;"
+      >
+        <span>Draw three cards from the deck, {userName}</span><i></i>
+      </div>
+    {/if}
     <button on:click={handleButtonClick} style="--clr:#871616"
       ><span>Leave the Parlor</span><i></i></button
     >
@@ -139,99 +168,79 @@
         '........... deck .............'"
       >
         {#each threeCards as card, index}
-          {#if index === 0 && loadCard1}
+          {#if index === 0}
             <div
               class="bg-card-container"
+              on:mouseenter={() => {
+                if (postFlip[index]) hovered[index] = true;
+                console.log("Postflip below");
+                console.log(postFlip[index]);
+                console.log("Hovered below");
+                console.log(hovered[index]);
+              }}
+              on:mouseleave={() => {
+                if (isCardVisible[index] && flipped[index])
+                  (hovered[index] = false), (postFlip[index] = true);
+                console.log(postFlip[index]);
+              }}
               role="link"
               tabindex="0"
               style="grid-area: card-past-{index};"
+              transition:fade
             >
               <h2 class="text-xl font-semibold mb-2">
                 <span>Past</span>
               </h2>
-
-              <!-- {#if flipped[index]} -->
-              <!-- <h2 class="text-xl font-semibold mb-2">
-                  <span>Past</span>
-                </h2> -->
-              {#if flipped[index]}
-                <h2 class="text-xl font-semibold mb-2">{card.name}</h2>
-                <!-- <p class="text-#fed7aa-600 mb-2">Type: {card.type}</p> -->
-              {/if}
-              <div class="flip-card">
-                <div class="flip-card-inner" class:flip-it={flipped[index]}>
-                  <div
-                    on:click={() => handleCardClick(index)}
-                    on:keydown={(event) => {}}
-                    tabindex="0"
-                    role="button"
-                  >
-                    {#if card.reversed}
-                      <span style="transform: rotate(180deg)">
+              {#if isCardVisible[index]}
+                {#if flipped[index]}
+                  <h2 class="text-xl mt-2 font-semibold mb-2">{card.name}</h2>
+                  <!-- <p class="text-#fed7aa-600 mb-2">Type: {card.type}</p> -->
+                {/if}
+                {#if hovered[index] && flipped[index]}
+                  {#if card.reversed}
+                    <p class="meaning-text text-#fed7aa-600 mb-2">
+                      Meaning: <br /><br />
+                      {card.meaning_rev}
+                    </p>
+                  {:else}
+                    <p class="meaning-text text-#fed7aa-600 mb-2">
+                      Meaning: <br /><br />
+                      {card.meaning_up}
+                    </p>
+                  {/if}
+                {:else if isCardVisible[index]}
+                  <div class="flip-card">
+                    <div class="flip-card-inner" class:flip-it={flipped[index]}>
+                      <div
+                        on:click={() => handleCardClick(index)}
+                        on:keydown={(event) => {}}
+                        tabindex="0"
+                        role="button"
+                      >
                         <Flashcard
                           cardBack={`src/lib/assets/tarot_back.png`}
                           cardFront={`src/lib/assets/${card.image_file_name}`}
                           flipped={flipped[index]}
+                          reversed={card.reversed}
                         />
-                      </span>
-                    {:else}
-                      <Flashcard
-                        cardBack={`src/lib/assets/tarot_back.png`}
-                        cardFront={`src/lib/assets/${card.image_file_name}`}
-                        flipped={flipped[index]}
-                      />
-                    {/if}
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-              <!-- {#if card.reversed}
-                  <img
-                    src={`src/lib/assets/${card.image_file_name}`}
-                    alt={card.name}
-                    class="mb-2 rounded-lg card-image"
-                    style="transform: rotate(180deg);"
-                  />
-                {:else}
-                  <img
-                    src={`src/lib/assets/${card.image_file_name}`}
-                    alt={card.name}
-                    class="mb-2 rounded-lg card-image"
-                  />
-                {/if}
-              {:else}
-                <button on:click={() => handleCardClick(index)}>
-                  <img
-                    src={`src/lib/assets/tarot_back.png`}
-                    alt="back-tarot-card"
-                    class="mb-2 rounded-lg card-image"
-                  />
-                </button> -->
-              <!-- {/if} -->
-              {#if flipped[index]}
-                {#if card.reversed}
-                  <p class="meaning-text text-#fed7aa-600 mb-2">
-                    Meaning Reversed:
-                    {#if card.meaning_rev.length > 90}
-                      {card.meaning_rev.slice(0, 90) + "..."}
-                    {:else}
-                      {card.meaning_rev}
-                    {/if}
-                  </p>
-                {:else}
-                  <p class="meaning-text text-#fed7aa-600 mb-2">
-                    Meaning Upright:
-                    {#if card.meaning_up.length > 90}
-                      {card.meaning_up.slice(0, 90) + "..."}
-                    {:else}
-                      {card.meaning_up}
-                    {/if}
-                  </p>
                 {/if}
               {/if}
             </div>
-          {:else if index === threeCards.length - 1 && loadCard3}
+          {:else if index === threeCards.length - 1}
             <div
               class="bg-card-container"
+              on:mouseenter={() => {
+                if (postFlip[index]) hovered[index] = true;
+                console.log(postFlip[index]);
+              }}
+              on:mouseleave={() => {
+                if (isCardVisible[index] && flipped[index])
+                  (hovered[index] = false), (postFlip[index] = true);
+                console.log(postFlip[index]);
+              }}
               role="link"
               tabindex="0"
               style="grid-area: card-future-{index};"
@@ -239,51 +248,56 @@
               <h2 class="text-xl font-semibold mb-2">
                 <span>Future</span>
               </h2>
-              {#if flipped[index]}
-                <h2 class="text-xl font-semibold mb-2">{card.name}</h2>
-                <!-- <p class="text-#fed7aa-600 mb-2">Type: {card.type}</p> -->
-              {/if}
-              <div class="flip-card">
-                <div class="flip-card-inner" class:flip-it={flipped[index]}>
-                  <div
-                    on:click={() => handleCardClick(index)}
-                    on:keydown={(event) => {}}
-                    tabindex="0"
-                    role="button"
-                  >
-                    <Flashcard
-                      cardBack={`src/lib/assets/tarot_back.png`}
-                      cardFront={`src/lib/assets/${card.image_file_name}`}
-                      flipped={flipped[index]}
-                    />
-                  </div>
-                </div>
-              </div>
-              {#if flipped[index]}
-                {#if card.reversed}
-                  <p class="meaning-text text-#fed7aa-600 mb-2">
-                    Meaning Reversed:
-                    {#if card.meaning_rev.length > 90}
-                      {card.meaning_rev.slice(0, 90) + "..."}
-                    {:else}
+              {#if isCardVisible[index]}
+                {#if flipped[index]}
+                  <h2 class="text-xl mt-2 font-semibold mb-2">{card.name}</h2>
+                  <!-- <p class="text-#fed7aa-600 mb-2">Type: {card.type}</p> -->
+                {/if}
+                {#if hovered[index] && flipped[index]}
+                  {#if card.reversed}
+                    <p class="meaning-text text-#fed7aa-600 mb-2">
+                      Meaning: <br /><br />
                       {card.meaning_rev}
-                    {/if}
-                  </p>
-                {:else}
-                  <p class="meaning-text text-#fed7aa-600 mb-2">
-                    Meaning Upright:
-                    {#if card.meaning_up.length > 90}
-                      {card.meaning_up.slice(0, 90) + "..."}
-                    {:else}
+                    </p>
+                  {:else}
+                    <p class="meaning-text text-#fed7aa-600 mb-2">
+                      Meaning: <br /><br />
                       {card.meaning_up}
-                    {/if}
-                  </p>
+                    </p>
+                  {/if}
+                {:else if isCardVisible[index]}
+                  <div class="flip-card">
+                    <div class="flip-card-inner" class:flip-it={flipped[index]}>
+                      <div
+                        on:click={() => handleCardClick(index)}
+                        on:keydown={(event) => {}}
+                        tabindex="0"
+                        role="button"
+                      >
+                        <Flashcard
+                          cardBack={`src/lib/assets/tarot_back.png`}
+                          cardFront={`src/lib/assets/${card.image_file_name}`}
+                          flipped={flipped[index]}
+                          reversed={card.reversed}
+                        />
+                      </div>
+                    </div>
+                  </div>
                 {/if}
               {/if}
             </div>
-          {:else if index === threeCards.length - 2 && loadCard2}
+          {:else if index === threeCards.length - 2}
             <div
               class="bg-card-container"
+              on:mouseenter={() => {
+                if (postFlip[index]) hovered[index] = true;
+                console.log(postFlip[index]);
+              }}
+              on:mouseleave={() => {
+                if (isCardVisible[index] && flipped[index])
+                  (hovered[index] = false), (postFlip[index] = true);
+                console.log(postFlip[index]);
+              }}
               role="link"
               tabindex="0"
               style="grid-area: card-present-{index};"
@@ -291,45 +305,41 @@
               <h2 class="text-xl font-semibold mb-2">
                 <span>Present</span>
               </h2>
-              {#if flipped[index]}
-                <h2 class="text-xl font-semibold mb-2">{card.name}</h2>
-                <!-- <p class="text-#fed7aa-600 mb-2">Type: {card.type}</p> -->
-              {/if}
-              <div class="flip-card">
-                <div class="flip-card-inner" class:flip-it={flipped[index]}>
-                  <div
-                    on:click={() => handleCardClick(index)}
-                    on:keydown={(event) => {}}
-                    tabindex="0"
-                    role="button"
-                  >
-                    <Flashcard
-                      cardBack={`src/lib/assets/tarot_back.png`}
-                      cardFront={`src/lib/assets/${card.image_file_name}`}
-                      flipped={flipped[index]}
-                    />
-                  </div>
-                </div>
-              </div>
-              {#if flipped[index]}
-                {#if card.reversed}
-                  <p class="meaning-text text-#fed7aa-600 mb-2">
-                    Meaning Reversed:
-                    {#if card.meaning_rev.length > 90}
-                      {card.meaning_rev.slice(0, 90) + "..."}
-                    {:else}
+              {#if isCardVisible[index]}
+                {#if flipped[index]}
+                  <h2 class="text-xl mt-2 font-semibold mb-2">{card.name}</h2>
+                  <!-- <p class="text-#fed7aa-600 mb-2">Type: {card.type}</p> -->
+                {/if}
+                {#if hovered[index] && flipped[index]}
+                  {#if card.reversed}
+                    <p class="meaning-text text-#fed7aa-600 mb-2">
+                      Meaning: <br /><br />
                       {card.meaning_rev}
-                    {/if}
-                  </p>
-                {:else}
-                  <p class="meaning-text text-#fed7aa-600 mb-2">
-                    Meaning Upright:
-                    {#if card.meaning_up.length > 90}
-                      {card.meaning_up.slice(0, 90) + "..."}
-                    {:else}
+                    </p>
+                  {:else}
+                    <p class="meaning-text text-#fed7aa-600 mb-2">
+                      Meaning: <br /><br />
                       {card.meaning_up}
-                    {/if}
-                  </p>
+                    </p>
+                  {/if}
+                {:else if isCardVisible[index]}
+                  <div class="flip-card">
+                    <div class="flip-card-inner" class:flip-it={flipped[index]}>
+                      <div
+                        on:click={() => handleCardClick(index)}
+                        on:keydown={(event) => {}}
+                        tabindex="0"
+                        role="button"
+                      >
+                        <Flashcard
+                          cardBack={`src/lib/assets/tarot_back.png`}
+                          cardFront={`src/lib/assets/${card.image_file_name}`}
+                          flipped={flipped[index]}
+                          reversed={card.reversed}
+                        />
+                      </div>
+                    </div>
+                  </div>
                 {/if}
               {/if}
             </div>
@@ -337,6 +347,7 @@
         {/each}
         {#if showDeck}
           <img
+            on:click={drawCard}
             src={`src/lib/assets/tarot_deck.png`}
             alt="deck"
             class="mb-2 rounded-lg deck-image"
@@ -345,21 +356,13 @@
         {/if}
         {#if showButton}
           <button
+            transition:fade
             on:click={getFate}
             class="mx-auto mt-8"
             id="get-fate-btn"
             style="--clr:#200505; grid-area: button;"
             ><span>Ask for reading</span><i></i></button
           >
-        {/if}
-        {#if showGuide}
-          <div
-            class="mx-auto mt-8 min-h-50"
-            id="guide-box"
-            style="--clr:#200505; grid-area: guide;"
-          >
-            <span>Draw three cards from the deck, {userName}</span><i></i>
-          </div>
         {/if}
       </div>
     </div>
@@ -400,7 +403,8 @@
     border: 0.25em rgb(50, 17, 3) solid;
     box-shadow: 0 0 20px 10px rgba(197, 126, 34, 0.5);
     transition: 0.2s;
-    align-self: center;
+    position: absolute;
+    align-self: flex-end;
     justify-self: center;
     margin: 5em 0 0 0;
     animation: box 2s infinite;
@@ -436,6 +440,7 @@
     border: 3px solid black;
     border-radius: 50px;
     min-height: 35em;
+    min-width: 336px;
     align-content: center;
   }
 
@@ -464,12 +469,11 @@
     );
     border-radius: 10px;
     font-size: 1.2rem;
-    width: 15em;
-    padding: 0.5em 0;
-    margin: auto auto 1em auto;
+
+    padding: 0.5em 1.2em;
+    margin: auto auto -1.7em auto;
     max-height: 5em;
     border: 3px solid black;
-    position: absolute;
     justify-self: center;
     text-align: center;
     align-self: center;
@@ -485,9 +489,11 @@
   }
 
   .meaning-text {
-    max-width: 15em;
+    max-width: 18em;
     display: block;
     margin: auto;
+    transition: 1s ease;
+    line-height: 2em;
   }
 
   .interpretation-text {

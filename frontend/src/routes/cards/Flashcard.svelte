@@ -2,6 +2,7 @@
     export let cardBack;
     export let cardFront;
     export let flipped;
+    export let reversed;
 </script>
 
 <div class="flip-card-inner" class:flip-it={flipped}>
@@ -10,6 +11,7 @@
             <img
                 src={flipped ? cardFront : cardBack}
                 alt={"Front of tarot card"}
+                style={reversed ? "transform: rotate(180deg)" : ""}
             />
         </div>
     </div>

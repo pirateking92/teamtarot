@@ -58,9 +58,19 @@ func GetandInterpretThreeCards(ctx *gin.Context) {
 	var cardNames []string
 
 	for _, card := range threeCards {
+		//decide if card is reversed or not
 		reversed := ReverseRandomiser()
+
+		//edit the title with (Reversed) if applicable
+		var FinalCardName string
+		if reversed {
+			FinalCardName = card.CardName + " (Reversed)"
+		} else {
+			FinalCardName = card.CardName
+		}
+
 		jsonCards = append(jsonCards, models.JSONCard{
-			CardName:       card.CardName,
+			CardName:       FinalCardName,
 			Type:           card.Type,
 			MeaningUp:      card.MeaningUp,
 			MeaningReverse: card.MeaningReverse,
