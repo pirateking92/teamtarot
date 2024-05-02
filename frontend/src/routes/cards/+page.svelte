@@ -385,7 +385,7 @@
   {:else}
   <div class="modal-backdrop">
     <div class="interpretation-modal">
-      <div class="interpretation-container shadow-md p-4 rounded-lg">
+      <div class="interpretation-container shadow-md p-4 rounded-lg" transition:fade>
         <button class="close-button" on:click={closeInterpretationModal}>back</button>
         <p class="interpretation-text" style="white-space: pre-line;">{interpretation}</p>
       </div>
