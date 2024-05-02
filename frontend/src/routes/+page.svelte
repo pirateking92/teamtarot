@@ -26,14 +26,14 @@
 <div class="container">
   <br /><br />
   <div class="intro-text">
-    <Typewriter delay={500} interval={75}>
+    <Typewriter delay={500} interval={60}>
       <h1>Ah, I've been expecting you, seeker.</h1>
     </Typewriter>
-    <Typewriter delay={4000} interval={75}>
+    <Typewriter delay={4000} interval={60}>
       <h1>My name is Cassandra.</h1>
     </Typewriter>
     <br />
-    <Typewriter delay={6000} interval={75}>
+    <Typewriter delay={6000} interval={60}>
       <h1>What's yours?</h1>
     </Typewriter>
     <br /><br />

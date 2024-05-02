@@ -94,6 +94,7 @@
   }
 
   onMount(async () => {
+    document.querySelector('.container').classList.remove('hidden');
     try {
       const res = await fetch(
         `http://localhost:8082/cards?name=${userName}&userstory=${userStory}`,
@@ -128,7 +129,7 @@
   href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
   rel="stylesheet"
 />
-<div class="container mx-auto mt-8">
+<div class="container mx-auto mt-8 hidden">
   <div class="flex justify-between items-center mb-8">
     <h3 class="text-2xl font-bold card-display-title">Cassandra's Parlor</h3>
     {#if showGuide && isCardVisible.every((value) => value === true)}
@@ -655,6 +656,10 @@
     width: 15px;
     left: 80%;
     animation: move 3s infinite;
+  }
+
+  .container.hidden {
+    display: none;
   }
 
   @keyframes move {
