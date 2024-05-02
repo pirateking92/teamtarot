@@ -225,8 +225,8 @@
                         role="button"
                       >
                         <Flashcard
-                          cardBack={`$app/assets/assets/tarot_back.png`}
-                          cardFront={`$app/assets/assets/${card.image_file_name}`}
+                          cardBack={`/assets/tarot_back.png`}
+                          cardFront={`/assets/${card.image_file_name}`}
                           flipped={flipped[index]}
                           reversed={card.reversed}
                         />
@@ -282,8 +282,8 @@
                         role="button"
                       >
                         <Flashcard
-                          cardBack={`src/lib/assets/tarot_back.png`}
-                          cardFront={`src/lib/assets/${card.image_file_name}`}
+                          cardBack={`/assets/tarot_back.png`}
+                          cardFront={`/assets/${card.image_file_name}`}
                           flipped={flipped[index]}
                           reversed={card.reversed}
                         />
@@ -339,8 +339,8 @@
                         role="button"
                       >
                         <Flashcard
-                          cardBack={`src/lib/assets/tarot_back.png`}
-                          cardFront={`src/lib/assets/${card.image_file_name}`}
+                          cardBack={`/assets/tarot_back.png`}
+                          cardFront={`/assets/${card.image_file_name}`}
                           flipped={flipped[index]}
                           reversed={card.reversed}
                         />
@@ -355,7 +355,7 @@
         {#if showDeck}
           <img
             on:click={drawCard}
-            src={`src/lib/assets/tarot_deck.png`}
+            src={`/assets/tarot_deck.png`}
             alt="deck"
             class="mb-2 rounded-lg deck-image"
             style="grid-area: deck;"
@@ -405,7 +405,7 @@
   @import url("https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap");
 
   :global(html) {
-    background-image: url("../../lib/assets/2-parlor.png");
+    background-image: url("/assets/2-parlor.png");
     background-size: cover; /* Adjust as needed */
     background-position: center; /* Adjust as needed */
     background-repeat: no-repeat;
@@ -711,6 +711,6 @@
   }
 
   .flip-it {
-    transform: rotateY(180deg);
+    transform: scaleX(-1);
   }
 </style>
