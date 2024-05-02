@@ -9,6 +9,7 @@
   let inputFieldAppeared = false;
 
   onMount(() => {
+    document.querySelector('.container').classList.remove('hidden');
     // Simulating typewriter effect completion after 5 seconds
     setTimeout(() => {
       typewriterFinished = true;
@@ -29,30 +30,30 @@
   }
 </script>
 
-<div class="container">
+<div class="container hidden">
   <br /><br />
   <div class="intro-text">
     <p>
       Welcome, {#if userName}{userName}{:else}seeker{/if}.
     </p>
-    <Typewriter delay={500} interval={75}>
+    <Typewriter delay={500} interval={60}>
       <p>I can sense hope and fear within yourself.</p>
     </Typewriter>
     <br />
-    <Typewriter delay={4500} interval={75}>
+    <Typewriter delay={4500} interval={60}>
       <p>
         Let me guide you through the land where fate, fortune and destiny
         intertwine.
       </p>
     </Typewriter>
-    <Typewriter delay={12000} interval={75}>
+    <Typewriter delay={12000} interval={60}>
       <p>
         In order to do this, we will draw three cards, representing Past,
         Present and Future.
       </p>
     </Typewriter>
     <br />
-    <Typewriter delay={20000} interval={75}>
+    <Typewriter delay={20000} interval={60}>
       <p>But now tell me, what has been tormenting you?</p>
     </Typewriter>
     <br />
@@ -218,6 +219,9 @@
     animation: move 3s infinite;
   }
 
+  .container.hidden {
+    display: none;
+  }
   @keyframes move {
     0% {
       transform: translateX(0);
