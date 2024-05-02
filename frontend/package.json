@@ -5,22 +5,33 @@
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build",
-		"preview": "vite preview"
+		"preview": "vite preview",
+		"test": "vitest run",
+		"test:ui": "vitest --ui",
+		"test:watch": "vitest"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^3.0.0",
 		"@sveltejs/enhanced-img": "^0.2.0",
 		"@sveltejs/kit": "^2.0.0",
 		"@sveltejs/vite-plugin-svelte": "^3.0.0",
+		"@testing-library/jest-dom": "^6.4.2",
+		"@testing-library/svelte": "^5.1.0",
+		"@testing-library/user-event": "^14.5.2",
+		"@vitest/ui": "^1.5.2",
+		"jest": "^29.7.0",
+		"jsdom": "^24.0.0",
 		"svelte": "^4.2.7",
 		"svelte-typewriter": "^3.2.3",
 		"tailwindcss": "^3.4.3",
-		"vite": "^5.0.3"
+		"vite": "^5.0.3",
+		"vitest": "^1.5.2"
 	},
 	"type": "module",
 	"dependencies": {
 		"autoprefixer": "^10.4.19",
 		"cssnano": "^6.1.2",
-		"svelte-preprocess": "^5.1.4"
+		"svelte-preprocess": "^5.1.4",
+		"svelte-routing": "^2.12.0"
 	}
 }

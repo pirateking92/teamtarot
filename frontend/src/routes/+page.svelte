@@ -14,7 +14,7 @@
     }, 9000);
     setTimeout(() => {
       inputFieldAppeared = true;
-    }, 13000);
+    }, 11000);
   });
 
   function handleButtonClick() {
