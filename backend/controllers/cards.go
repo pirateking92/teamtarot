@@ -83,15 +83,12 @@ func GetandInterpretThreeCards(ctx *gin.Context) {
 		var reversedValue string
 		card.Reversed = reversed
 		if card.Reversed {
-			reversedValue = "Reversed"
+			reversedValue = "(Reversed)"
 		} else {
-			reversedValue = "NotReversed"
+			reversedValue = ""
 		}
 
 		cardNames = append(cardNames, card.CardName, reversedValue)
-
-		// reversedValue := strconv.FormatBool(card.Reversed)
-		// cardNames = append(cardNames, card.CardName, reversedValue)
 	}
 
 	//here we send our three Cards and the requestID in JSON form to the client, to be rendered in the UI.

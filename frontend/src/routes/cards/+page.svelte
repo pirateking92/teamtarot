@@ -12,6 +12,7 @@
   let error = null;
   let interpretation = null;
   let showInterpretation = false;
+  let postShowInterpretation = false;
   let showButton = false;
   let flipped = [false, false, false];
   let postFlip = [false, false, false];
@@ -56,6 +57,10 @@
     }
   }
 
+  function closeInterpretationModal() {
+    showInterpretation = false;
+  }
+
   if (typeof window !== "undefined") {
     const urlParams = new URLSearchParams(window.location.search);
     userName = urlParams.get("name") || "";
@@ -84,6 +89,7 @@
       console.error("Error:", err);
     } finally {
       showInterpretation = true;
+      postShowInterpretation = true;
     }
   }
 
@@ -354,7 +360,7 @@
             style="grid-area: deck;"
           />
         {/if}
-        {#if showButton}
+        {#if showButton && !postShowInterpretation}
           <button
             transition:fade
             on:click={getFate}
@@ -363,13 +369,27 @@
             style="--clr:#200505; grid-area: button;"
             ><span>Ask for reading</span><i></i></button
           >
+        {:else if showButton}
+          <button
+            transition:fade
+            on:click={getFate}
+            class="mx-auto mt-8"
+            id="get-fate-btn"
+            style="--clr:#200505; grid-area: button;"
+          ><span>Show reading</span><i></i></button
+        >
         {/if}
       </div>
     </div>
   {:else}
-    <div class="mt-4 interpretation-container shadow-md p-4 rounded-lg">
-      <p class="interpretation-text">{interpretation}</p>
+  <div class="modal-backdrop">
+    <div class="interpretation-modal">
+      <div class="interpretation-container shadow-md p-4 rounded-lg">
+        <button class="close-button" on:click={closeInterpretationModal}>back</button>
+        <p class="interpretation-text" style="white-space: pre-line;">{interpretation}</p>
+      </div>
     </div>
+  </div>
   {/if}
 </div>
 
@@ -497,8 +517,37 @@
   }
 
   .interpretation-text {
-    font-size: 1.5em;
+    font-size: 1.1em;
     line-height: 1.6em;
+  }
+
+  .modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0); /* Semi-transparent black */
+    z-index: 999; 
+  }
+
+  .interpretation-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000; /* Ensure it's above the backdrop */
+  }
+
+  .close-button {
+    position: absolute;
+    top: 15px;
+    right: 30px;
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 15px;
+    cursor: pointer;
   }
 
   .interpretation-container {
@@ -517,6 +566,7 @@
     min-height: 35em;
     align-content: center;
     align-self: center;
+    position: relative;
   }
 
   /* BUTTON STYLING BELOW */
@@ -652,3 +702,7 @@
     transform: rotateY(180deg);
   }
 </style>
+
+
+
+<!-- EEEEEEEEEEE -->
