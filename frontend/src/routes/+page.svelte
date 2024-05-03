@@ -59,10 +59,11 @@
 
   :global(html) {
     background-image: url("../lib/assets/0-town.jpeg");
-    background-size: cover; /* Adjust as needed */
-    background-position: center; /* Adjust as needed */
+    background-size: cover;
+    background-position: center;
     background-repeat: no-repeat;
-    height: 100%;
+    background-attachment: fixed;
+    height: 100vh;
   }
 
   :global(body) {
@@ -71,14 +72,16 @@
     font-family: MedievalSharp, Arial, Helvetica, sans-serif;
     color: rgb(197, 176, 176);
   }
+
+  /* Base styles for smaller screens */
   .container {
     display: flex;
-    margin: 5em;
+    margin: 1em;
     min-height: 25em;
     box-shadow: 0 0 1em 4px rgba(207, 49, 5, 0.5);
-    padding: 0.5em 5em;
+    padding: 0.5em 1em;
     font-weight: 600;
-    font-size: 1.7rem;
+    font-size: 1rem;
     background: linear-gradient(
       to right,
       rgba(0, 0, 0, 0.9),
@@ -90,7 +93,7 @@
   .intro-text {
     text-align: center;
     margin: auto;
-    padding: 2em 1em;
+    padding: 1em;
     border-radius: 50px;
   }
 
@@ -106,9 +109,9 @@
     margin: 0 auto 2em auto;
     border: #200505 solid 2px;
     outline: none;
-    min-width: 20em;
+    min-width: 15em;
     text-align: center;
-    font-size: 1.2rem;
+    font-size: 1rem;
   }
 
   button {
@@ -119,8 +122,8 @@
     text-transform: uppercase;
     border: none;
     letter-spacing: 0.2rem;
-    font-size: 1.2rem;
-    padding: 1.3rem 3rem;
+    font-size: 1rem;
+    padding: 1rem 2rem;
     transition: 0.2s;
     animation: box 2s infinite;
     border-radius: 20px;
@@ -128,13 +131,12 @@
 
   button:hover {
     letter-spacing: 0.3rem;
-    padding: 1.3rem 3rem;
+    padding: 1rem 2rem;
     background: linear-gradient(
       to right,
       rgba(0, 0, 0, 0.7),
       rgba(80, 13, 2, 0.5)
     );
-    /* box-shadow: 0 0 35px var(--clr); */
     animation: box 1.5s infinite;
   }
 
@@ -217,6 +219,29 @@
     }
     100% {
       box-shadow: #27272c;
+    }
+  }
+
+  /* Styles for larger screens */
+  @media (min-width: 768px) {
+    .container {
+      margin: 5em;
+      padding: 0.5em 5em;
+      font-size: 1.7rem;
+    }
+
+    .intro-text {
+      padding: 2em 1em;
+    }
+
+    .input-field {
+      min-width: 20em;
+      font-size: 1.2rem;
+    }
+
+    button {
+      font-size: 1.2rem;
+      padding: 1.3rem 3rem;
     }
   }
 </style>
