@@ -49,7 +49,6 @@ To run Team Tarot locally, you'll need to install:
 ## Technologies Used
 - GoLang is used for the backend with a Gin framework to handle HTTP requests. 
 - SvelteKit is used for the frontend, requiring that node.js be installed.
-- Tailwind CSS library is used for styling
 
 ## Project Structure 
 Frontend 
@@ -65,7 +64,9 @@ Backend
 - routes: This contains files that define API endpoints and map them to corresponding controllers 
 - services: Holds functions for fetching tarot card data from an external API and interpreting them using the OpenAI API 
 
+## Diagrams
 
+...
 
 ## Acknowledgements
 
