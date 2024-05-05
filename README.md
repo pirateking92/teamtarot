@@ -1,8 +1,8 @@
-<h1>Team Tarot</h1>
+<h1>Cassandra</h1>
 
-Welcome to the README for Team Tarot, you're new favourite fortune teller
+Welcome to the README for Cassandra, you're new favourite fortune teller from Team Tarot
 
-This repo contains the codebase for the Tarot Card Reading 
+This repo contains the codebase for Cassandra, the Tarot Card Reading 
 Application made by Team Tarot (Alannah Lawlor, Josh Day, Fara Ifaturoti, Oli Kelly,
 Giandomenico Loparco and Matt Doyle).
 
@@ -18,7 +18,8 @@ Giandomenico Loparco and Matt Doyle).
 - [Contact](#contact)
 
 ## Description
-Team Tarot is a tarot card reading application that, when the user is ready, will deal 3 random cards from a 78 card deck of tarot cards, provide an explanation for each, and then give a reading. Each card will appear reversed or upright and their meanings will be displayed accordingly. The type of card whether major or minor will also be printed, each of the three tarot cards printed will provide information about the past, present and the future.
+Cassandra is a tarot card reading application that, when the user is ready, will deal 3 random cards from a 78 card deck of tarot cards, provide an explanation for each, and then give a reading. Each card will appear reversed or upright and their meanings will be displayed accordingly. The type of card whether major or minor will also be printed, each of the three tarot cards printed will provide information about the past, present and the future.
+A personalised reading from the cards that have been drawn will also be given after the three cards have been drawn.
 
 ## Installation
 To run Team Tarot locally, you'll need to install:
