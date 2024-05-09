@@ -1,5 +1,5 @@
 <script>
-  import "../../app.css";
+  import "../../tailwind.css";
   import Typewriter from "svelte-typewriter";
   import { onMount } from "svelte";
 
