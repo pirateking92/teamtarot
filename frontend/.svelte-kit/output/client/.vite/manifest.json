@@ -1,0 +1,259 @@
+{
+  ".svelte-kit/generated/client-optimized/app.js": {
+    "file": "_app/immutable/entry/app.DRvXX_yX.js",
+    "name": "entry/app",
+    "src": ".svelte-kit/generated/client-optimized/app.js",
+    "isEntry": true,
+    "imports": [
+      "_preload-helper.D6kgxu3v.js",
+      "_scheduler.CgzrBarl.js",
+      "_index.B7BUR2Ah.js"
+    ],
+    "dynamicImports": [
+      ".svelte-kit/generated/client-optimized/nodes/0.js",
+      ".svelte-kit/generated/client-optimized/nodes/1.js",
+      ".svelte-kit/generated/client-optimized/nodes/2.js",
+      ".svelte-kit/generated/client-optimized/nodes/3.js",
+      ".svelte-kit/generated/client-optimized/nodes/4.js"
+    ]
+  },
+  ".svelte-kit/generated/client-optimized/nodes/0.js": {
+    "file": "_app/immutable/nodes/0.BN_7um98.js",
+    "name": "nodes/0",
+    "src": ".svelte-kit/generated/client-optimized/nodes/0.js",
+    "isEntry": true,
+    "isDynamicEntry": true,
+    "imports": [
+      "_scheduler.CgzrBarl.js",
+      "_index.B7BUR2Ah.js"
+    ]
+  },
+  ".svelte-kit/generated/client-optimized/nodes/1.js": {
+    "file": "_app/immutable/nodes/1.DYgd1Z6E.js",
+    "name": "nodes/1",
+    "src": ".svelte-kit/generated/client-optimized/nodes/1.js",
+    "isEntry": true,
+    "isDynamicEntry": true,
+    "imports": [
+      "_scheduler.CgzrBarl.js",
+      "_index.B7BUR2Ah.js",
+      "_entry.WE1SeAUf.js"
+    ]
+  },
+  ".svelte-kit/generated/client-optimized/nodes/2.js": {
+    "file": "_app/immutable/nodes/2.CwCEVTYR.js",
+    "name": "nodes/2",
+    "src": ".svelte-kit/generated/client-optimized/nodes/2.js",
+    "isEntry": true,
+    "isDynamicEntry": true,
+    "imports": [
+      "_scheduler.CgzrBarl.js",
+      "_index.B7BUR2Ah.js",
+      "_Typewriter.2-Kk8hvz.js"
+    ],
+    "css": [
+      "_app/immutable/assets/2.CBcT9ex7.css"
+    ],
+    "assets": [
+      "_app/immutable/assets/0-town.DLA-P_J1.jpeg"
+    ]
+  },
+  ".svelte-kit/generated/client-optimized/nodes/3.js": {
+    "file": "_app/immutable/nodes/3.CHESGqFX.js",
+    "name": "nodes/3",
+    "src": ".svelte-kit/generated/client-optimized/nodes/3.js",
+    "isEntry": true,
+    "isDynamicEntry": true,
+    "imports": [
+      "_scheduler.CgzrBarl.js",
+      "_index.B7BUR2Ah.js",
+      "_Typewriter.svelte_svelte_type_style_lang.5layhGBJ.js"
+    ],
+    "css": [
+      "_app/immutable/assets/3.B9UvYLDB.css"
+    ]
+  },
+  ".svelte-kit/generated/client-optimized/nodes/4.js": {
+    "file": "_app/immutable/nodes/4.vFT_qWmx.js",
+    "name": "nodes/4",
+    "src": ".svelte-kit/generated/client-optimized/nodes/4.js",
+    "isEntry": true,
+    "isDynamicEntry": true,
+    "imports": [
+      "_scheduler.CgzrBarl.js",
+      "_index.B7BUR2Ah.js",
+      "_Typewriter.2-Kk8hvz.js"
+    ],
+    "css": [
+      "_app/immutable/assets/4.BnZFaYah.css"
+    ],
+    "assets": [
+      "_app/immutable/assets/1-alley.BJgV3gjE.png"
+    ]
+  },
+  "_Typewriter.!~{00i}~.js": {
+    "file": "_app/immutable/assets/Typewriter.CG0Ucbq7.css",
+    "src": "_Typewriter.!~{00i}~.js"
+  },
+  "_Typewriter.2-Kk8hvz.js": {
+    "file": "_app/immutable/chunks/Typewriter.2-Kk8hvz.js",
+    "name": "Typewriter",
+    "imports": [
+      "_preload-helper.D6kgxu3v.js",
+      "_scheduler.CgzrBarl.js",
+      "_index.B7BUR2Ah.js",
+      "_Typewriter.svelte_svelte_type_style_lang.5layhGBJ.js"
+    ],
+    "dynamicImports": [
+      "node_modules/svelte-typewriter/package/modes/concurrent.js",
+      "node_modules/svelte-typewriter/package/modes/cascade.js",
+      "node_modules/svelte-typewriter/package/modes/loop.js",
+      "node_modules/svelte-typewriter/package/modes/loopOnce.js",
+      "node_modules/svelte-typewriter/package/modes/loopRandom.js",
+      "node_modules/svelte-typewriter/package/modes/scramble.js"
+    ],
+    "css": [
+      "_app/immutable/assets/Typewriter.CG0Ucbq7.css"
+    ]
+  },
+  "_Typewriter.svelte_svelte_type_style_lang.!~{00n}~.js": {
+    "file": "_app/immutable/assets/Typewriter.8SvO1OVe.css",
+    "src": "_Typewriter.svelte_svelte_type_style_lang.!~{00n}~.js"
+  },
+  "_Typewriter.svelte_svelte_type_style_lang.5layhGBJ.js": {
+    "file": "_app/immutable/chunks/Typewriter.svelte_svelte_type_style_lang.5layhGBJ.js",
+    "name": "Typewriter.svelte_svelte_type_style_lang",
+    "css": [
+      "_app/immutable/assets/Typewriter.8SvO1OVe.css"
+    ]
+  },
+  "_animationSetup.50uqR8Z1.js": {
+    "file": "_app/immutable/chunks/animationSetup.50uqR8Z1.js",
+    "name": "animationSetup",
+    "imports": [
+      "_scheduler.CgzrBarl.js"
+    ]
+  },
+  "_entry.WE1SeAUf.js": {
+    "file": "_app/immutable/chunks/entry.WE1SeAUf.js",
+    "name": "entry",
+    "imports": [
+      "_scheduler.CgzrBarl.js"
+    ]
+  },
+  "_index.B7BUR2Ah.js": {
+    "file": "_app/immutable/chunks/index.B7BUR2Ah.js",
+    "name": "index",
+    "imports": [
+      "_scheduler.CgzrBarl.js"
+    ]
+  },
+  "_preload-helper.D6kgxu3v.js": {
+    "file": "_app/immutable/chunks/preload-helper.D6kgxu3v.js",
+    "name": "preload-helper"
+  },
+  "_scheduler.CgzrBarl.js": {
+    "file": "_app/immutable/chunks/scheduler.CgzrBarl.js",
+    "name": "scheduler"
+  },
+  "_unwriteEffect.BpwuZqlW.js": {
+    "file": "_app/immutable/chunks/unwriteEffect.BpwuZqlW.js",
+    "name": "unwriteEffect",
+    "imports": [
+      "_writeEffect.BJvMesFy.js"
+    ]
+  },
+  "_writeAndUnwriteText.DEOUgUHN.js": {
+    "file": "_app/immutable/chunks/writeAndUnwriteText.DEOUgUHN.js",
+    "name": "writeAndUnwriteText",
+    "imports": [
+      "_writeEffect.BJvMesFy.js",
+      "_unwriteEffect.BpwuZqlW.js",
+      "_animationSetup.50uqR8Z1.js"
+    ]
+  },
+  "_writeEffect.BJvMesFy.js": {
+    "file": "_app/immutable/chunks/writeEffect.BJvMesFy.js",
+    "name": "writeEffect",
+    "imports": [
+      "_animationSetup.50uqR8Z1.js"
+    ]
+  },
+  "node_modules/@sveltejs/kit/src/runtime/client/entry.js": {
+    "file": "_app/immutable/entry/start.H3F_7lVo.js",
+    "name": "entry/start",
+    "src": "node_modules/@sveltejs/kit/src/runtime/client/entry.js",
+    "isEntry": true,
+    "imports": [
+      "_entry.WE1SeAUf.js"
+    ]
+  },
+  "node_modules/svelte-typewriter/package/modes/cascade.js": {
+    "file": "_app/immutable/chunks/cascade.C_AqNlx4.js",
+    "name": "cascade",
+    "src": "node_modules/svelte-typewriter/package/modes/cascade.js",
+    "isDynamicEntry": true,
+    "imports": [
+      "_writeEffect.BJvMesFy.js",
+      "_animationSetup.50uqR8Z1.js"
+    ]
+  },
+  "node_modules/svelte-typewriter/package/modes/concurrent.js": {
+    "file": "_app/immutable/chunks/concurrent.Do1qhaku.js",
+    "name": "concurrent",
+    "src": "node_modules/svelte-typewriter/package/modes/concurrent.js",
+    "isDynamicEntry": true,
+    "imports": [
+      "_writeEffect.BJvMesFy.js",
+      "_animationSetup.50uqR8Z1.js"
+    ]
+  },
+  "node_modules/svelte-typewriter/package/modes/loop.js": {
+    "file": "_app/immutable/chunks/loop.jjAvP0bW.js",
+    "name": "loop",
+    "src": "node_modules/svelte-typewriter/package/modes/loop.js",
+    "isDynamicEntry": true,
+    "imports": [
+      "_writeAndUnwriteText.DEOUgUHN.js",
+      "_animationSetup.50uqR8Z1.js"
+    ]
+  },
+  "node_modules/svelte-typewriter/package/modes/loopOnce.js": {
+    "file": "_app/immutable/chunks/loopOnce.RIGKrgWU.js",
+    "name": "loopOnce",
+    "src": "node_modules/svelte-typewriter/package/modes/loopOnce.js",
+    "isDynamicEntry": true,
+    "imports": [
+      "_animationSetup.50uqR8Z1.js",
+      "_writeEffect.BJvMesFy.js",
+      "_unwriteEffect.BpwuZqlW.js"
+    ]
+  },
+  "node_modules/svelte-typewriter/package/modes/loopRandom.js": {
+    "file": "_app/immutable/chunks/loopRandom.Bq1FpH7k.js",
+    "name": "loopRandom",
+    "src": "node_modules/svelte-typewriter/package/modes/loopRandom.js",
+    "isDynamicEntry": true,
+    "imports": [
+      "_writeAndUnwriteText.DEOUgUHN.js",
+      "_animationSetup.50uqR8Z1.js"
+    ]
+  },
+  "node_modules/svelte-typewriter/package/modes/scramble.js": {
+    "file": "_app/immutable/chunks/scramble.VtghCalt.js",
+    "name": "scramble",
+    "src": "node_modules/svelte-typewriter/package/modes/scramble.js",
+    "isDynamicEntry": true,
+    "imports": [
+      "_animationSetup.50uqR8Z1.js"
+    ]
+  },
+  "src/lib/assets/0-town.jpeg": {
+    "file": "_app/immutable/assets/0-town.DLA-P_J1.jpeg",
+    "src": "src/lib/assets/0-town.jpeg"
+  },
+  "src/lib/assets/1-alley.png": {
+    "file": "_app/immutable/assets/1-alley.BJgV3gjE.png",
+    "src": "src/lib/assets/1-alley.png"
+  }
+}
