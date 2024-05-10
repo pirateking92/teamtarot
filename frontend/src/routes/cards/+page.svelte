@@ -147,7 +147,7 @@
   </main>
   <div class="flex items-center justify-center">
     <button
-      class="bg-green-700 text-white flex rounded-md text-2xl font-medieval p-4 shadow-lg hover:bg-green-800 transition-colors duration-200"
+      class="bg-green-700 text-white flex rounded-lg text-2xl font-medieval p-4 shadow-lg hover:bg-green-800 transition-colors duration-200"
       >Draw Cards</button
     >
   </div>
