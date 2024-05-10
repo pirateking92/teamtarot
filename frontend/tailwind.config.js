@@ -6,7 +6,11 @@ export default {
       'serif': ['ui-serif', 'Georgia',],
       'medieval': [ 'MedievalSharp',],
     },
-    extend: {},
+    extend: {
+      screens: {
+        'body': {'raw': 'body'},
+      }
+    },
   },
   plugins: [],
 }

@@ -79,6 +79,7 @@ declare module '$env/static/private' {
 	export const HOME: string;
 	export const VSCODE_GIT_ASKPASS_MAIN: string;
 	export const npm_config_cache: string;
+	export const VSCODE_PATH_PREFIX: string;
 	export const LESS: string;
 	export const LOGNAME: string;
 	export const npm_lifecycle_script: string;
@@ -176,6 +177,7 @@ declare module '$env/dynamic/private' {
 		HOME: string;
 		VSCODE_GIT_ASKPASS_MAIN: string;
 		npm_config_cache: string;
+		VSCODE_PATH_PREFIX: string;
 		LESS: string;
 		LOGNAME: string;
 		npm_lifecycle_script: string;
