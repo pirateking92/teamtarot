@@ -111,6 +111,23 @@
     }
   });
 
+  function detectDevice() {
+    const userAgent = navigator.userAgent;
+
+    if (
+      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        userAgent
+      )
+    ) {
+      return "Mobile";
+    } else {
+      return "Desktop";
+    }
+  }
+
+  const deviceType = detectDevice();
+  console.log(deviceType); // Outputs: 'Mobile' or 'Desktop'
+
   // let isHovering = [false, false, false];
 
   // function hoverCard(index) {
@@ -410,6 +427,8 @@
     background-position: center; /* Adjust as needed */
     background-repeat: no-repeat;
     height: 100%;
+    margin: 0;
+    overflow: auto;
   }
 
   :global(body) {
@@ -417,6 +436,9 @@
     padding: 0;
     font-family: MedievalSharp, Arial, Helvetica, sans-serif;
     color: rgb(197, 176, 176);
+    height: 100%;
+    margin: 0;
+    overflow: auto;
   }
 
   .card-display-title {
