@@ -36,7 +36,14 @@ func setupCORS(app *gin.Engine) {
 	config := cors.DefaultConfig()
 	config.AllowAllOrigins = true
 	config.AllowCredentials = true
-	config.AllowHeaders = []string{"Origin", "X-Requested-With", "Content-Type", "Accept"}
+	config.AllowHeaders = []string{"Origin",
+		"X-Requested-With",
+		"Content-Type",
+		"Accept",
+		"x-api-key",         // Allow custom header for Anthropics API
+		"anthropic-version", // Custom header for Anthropics
+		"Authorization",     // Header for OpenAI API key
+	}
 
 	app.Use(cors.New(config))
 }

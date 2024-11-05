@@ -7,9 +7,8 @@ import (
 	"os"
 	"time"
 
-	"github.com/google/uuid"
-
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"main.go/errors"
 	"main.go/models"
 	"main.go/services"
@@ -21,11 +20,9 @@ var LocalStorage map[string]string = make(map[string]string)
 // Function to select 3 random tarot cards from the deck
 func GetRandomCard(deck []models.Card, currentCards []models.Card) models.Card {
 	randomiser := rand.New(rand.NewSource(time.Now().UnixNano()))
-
 	for {
 		randomIndex := randomiser.Intn(len(deck))
 		randomCard := deck[randomIndex]
-
 		isDuplicate := false
 		for _, card := range currentCards {
 			if card.CardName == randomCard.CardName {
@@ -33,7 +30,6 @@ func GetRandomCard(deck []models.Card, currentCards []models.Card) models.Card {
 				break
 			}
 		}
-
 		if !isDuplicate {
 			return randomCard
 		}
@@ -42,34 +38,28 @@ func GetRandomCard(deck []models.Card, currentCards []models.Card) models.Card {
 
 // Function to get and interpret 3 tarot cards
 func GetandInterpretThreeCards(ctx *gin.Context) {
-	deck, err := services.FetchTarotCards() //returns a type of []Card
+	deck, err := services.FetchTarotCards()
 	if err != nil {
 		errors.SendInternalError(ctx, err)
 		return
 	}
+
 	requestID := uuid.New()
 	var threeCards []models.Card
 	threeCards = append(threeCards, GetRandomCard(deck, threeCards))
 	threeCards = append(threeCards, GetRandomCard(deck, threeCards))
 	threeCards = append(threeCards, GetRandomCard(deck, threeCards))
 
-	// from here below we convert the three Card into three JSONCard
-
 	var jsonCards []models.JSONCard
 	var cardNames []string
-
 	for _, card := range threeCards {
-		//decide if card is reversed or not
 		reversed := ReverseRandomiser()
-
-		//edit the title with (Reversed) if applicable
 		var FinalCardName string
 		if reversed {
 			FinalCardName = card.CardName + " (Reversed)"
 		} else {
 			FinalCardName = card.CardName
 		}
-
 		jsonCards = append(jsonCards, models.JSONCard{
 			CardName:       FinalCardName,
 			Type:           card.Type,
@@ -79,7 +69,6 @@ func GetandInterpretThreeCards(ctx *gin.Context) {
 			ImageName:      card.ShortName + ".jpg",
 			Reversed:       reversed,
 		})
-
 		var reversedValue string
 		card.Reversed = reversed
 		if card.Reversed {
@@ -87,18 +76,14 @@ func GetandInterpretThreeCards(ctx *gin.Context) {
 		} else {
 			reversedValue = ""
 		}
-
 		cardNames = append(cardNames, card.CardName, reversedValue)
 	}
-
-	//here we send our three Cards and the requestID in JSON form to the client, to be rendered in the UI.
 
 	ctx.JSON(http.StatusOK, gin.H{"cards": jsonCards, "requestID": requestID})
 	userStory := ctx.Query("userstory")
 	userName := ctx.Query("name")
 	fmt.Print(userName, userStory)
 
-	// here we use Open AI's API to generate a reading of our three cards, we store this reading locally to return it to the user later.
 	go func() {
 		testing := os.Getenv("TESTING")
 		if testing == "True" {
@@ -106,37 +91,45 @@ func GetandInterpretThreeCards(ctx *gin.Context) {
 			LocalStorage[requestID.String()] = interpretation
 			return
 		}
-		apiKey := os.Getenv("API_KEY")
-		interpretation, err := services.InterpretTarotCards(apiKey, cardNames, requestID, userStory, userName)
-		if err != nil {
-			errors.SendInternalError(ctx, err)
+
+		// CHANGE 1: Updated environment variable name to match Anthropic's convention
+		apiKey := os.Getenv("ANTHROPIC_API_KEY")
+		if apiKey == "" {
+			errors.SendInternalError(ctx, fmt.Errorf("ANTHROPIC_API_KEY not found in environment"))
 			return
 		}
+
+		// CHANGE 2: Added error checking for interpretation
+		interpretation, err := services.InterpretTarotCards(apiKey, cardNames, requestID, userStory, userName)
+		if err != nil {
+			// CHANGE 3: Store error message in LocalStorage instead of sending error immediately
+			// This allows the frontend to handle the error gracefully
+			LocalStorage[requestID.String()] = fmt.Sprintf("Error generating interpretation: %v", err)
+			return
+		}
+
 		LocalStorage[requestID.String()] = interpretation
-		GetInterpretation(ctx)
+
+		// CHANGE 4: Removed redundant GetInterpretation call
+		// The interpretation will be fetched by the frontend using the separate endpoint
 		fmt.Println(interpretation)
 	}()
 }
 
-// function to send the interpretation from the internal storage to the frontend
 func GetInterpretation(ctx *gin.Context) {
-	// Get the UUID from the request parameters
 	requestID := ctx.Param("uuid")
-
-	// Retrieve the interpretation from local storage
 	interpretation, ok := LocalStorage[requestID]
-
-	// Check if the interpretation was found
 	if !ok {
-		ctx.JSON(http.StatusNotFound, gin.H{"error": "No interpretation found for this UUID"})
+		// CHANGE 5: More detailed error response
+		ctx.JSON(http.StatusNotFound, gin.H{
+			"error":   "No interpretation found for this UUID",
+			"details": "The interpretation might still be generating or there was an error in the process",
+		})
 		return
 	}
-
-	// Return the interpretation
 	ctx.JSON(http.StatusOK, gin.H{"interpretation": interpretation})
 }
 
-// function to generate reversed cards at random
 func ReverseRandomiser() bool {
 	randomiser := rand.New(rand.NewSource(time.Now().UnixNano()))
 	randomBool := randomiser.Intn(2)

@@ -21,14 +21,6 @@
   let showGuide = true;
   let hovered = [false, false, false];
 
-  // function showPopup() {
-  //   document.getElementById("popup").classList.remove("hidden");
-  // }
-
-  // function hidePopup() {
-  //   document.getElementById("popup").classList.add("hidden");
-  // }
-
   function handleButtonClick() {
     window.location.href = "/";
   }
@@ -66,26 +58,26 @@
     userName = urlParams.get("name") || "";
     userStory = urlParams.get("userstory") || "";
   }
-  console.log(userName);
-  console.log(userStory);
 
   async function getFate() {
     try {
-      let data;
-      do {
-        const res = await fetch(
-          `http://localhost:8082/cards/interpret/${requestID}`,
-        );
-        data = await res.json();
-        if (data.interpretation) {
-          interpretation = data.interpretation;
-        } else {
-          // Wait for 1 second before trying again
-          await new Promise((resolve) => setTimeout(resolve, 1000));
-        }
-      } while (!data.interpretation);
+      const res = await fetch(
+        `http://localhost:8082/cards/interpret/${requestID}`
+      );
+      const data = await res.json();
+
+      if (data.interpretation) {
+        interpretation = data.interpretation;
+      } else if (data.error) {
+        error = data.error;
+        console.error("Error:", data.error);
+      } else {
+        // Wait for 1 second before trying again
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        await getFate();
+      }
     } catch (err) {
-      error = err.message;
+      error = `Error fetching interpretation: ${err.message}`;
       console.error("Error:", err);
     } finally {
       showInterpretation = true;
@@ -94,14 +86,18 @@
   }
 
   onMount(async () => {
-    document.querySelector('.container').classList.remove('hidden');
+    document.querySelector(".container").classList.remove("hidden");
     try {
-      const res = await fetch(
-        `http://localhost:8082/cards?name=${userName}&userstory=${userStory}`,
-      );
-      const data = await res.text();
-      threeCards = JSON.parse(data).cards;
-      requestID = JSON.parse(data).requestID;
+      const res = await fetch(`http://localhost:8082/cards`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name: userName, userstory: userStory }),
+      });
+      const data = await res.json();
+      threeCards = data.cards;
+      requestID = data.requestID;
       postFlip = [false, false, false];
     } catch (err) {
       error = err.message;
@@ -110,19 +106,6 @@
       isLoading = false;
     }
   });
-
-  // let isHovering = [false, false, false];
-
-  // function hoverCard(index) {
-  //   isHovering[index] = true;
-  // }
-
-  // function unhoverCard(index) {
-  //   isHovering[index] = false;
-  // }
-
-  // <!-- on:mouseenter={() => hoverCard(index)}
-  //             on:mouseleave={() => unhoverCard(index)} -->
 </script>
 
 <link
@@ -377,20 +360,27 @@
             class="mx-auto mt-8"
             id="get-fate-btn"
             style="--clr:#200505; grid-area: button;"
-          ><span>Show reading</span><i></i></button
-        >
+            ><span>Show reading</span><i></i></button
+          >
         {/if}
       </div>
     </div>
   {:else}
-  <div class="modal-backdrop">
-    <div class="interpretation-modal">
-      <div class="interpretation-container shadow-md p-4 rounded-lg" transition:fade>
-        <button class="close-button" on:click={closeInterpretationModal}>back</button>
-        <p class="interpretation-text" style="white-space: pre-line;">{interpretation}</p>
+    <div class="modal-backdrop">
+      <div class="interpretation-modal">
+        <div
+          class="interpretation-container shadow-md p-4 rounded-lg"
+          transition:fade
+        >
+          <button class="close-button" on:click={closeInterpretationModal}
+            >back</button
+          >
+          <p class="interpretation-text" style="white-space: pre-line;">
+            {interpretation}
+          </p>
+        </div>
       </div>
     </div>
-  </div>
   {/if}
 </div>
 
@@ -529,7 +519,7 @@
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0); /* Semi-transparent black */
-    z-index: 999; 
+    z-index: 999;
   }
 
   .interpretation-modal {
