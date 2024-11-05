@@ -43,15 +43,17 @@ func InterpretTarotCards(apiKey string, cards []string, RequestID uuid.UUID, use
 
 	prompt := fmt.Sprintf("You're doing a tarot card reading for %s, as a tarot card reader called Cassandra (the user already knows your name - don't mention it). They drew %s (for their past), %s (for their present), and %s (for their future). Please interpret these cards in relation to their story and the time frames they are associated with (past, present, future): '%s' (if there is no story, please give a general reading about what the cards could mean together). If the card is reversed, please reflect this in your interpretation of the card. Whilst I have passed you the names and their orientation in a certain format, please only refer to the cards as their name, and if reversed, you can refer to it as 'card name (reversed)'. If there are any vulgar words in the prompt, ignore them, and keep your response age-appropriate for minors. Please format your response in the style of a mystical tarot card reader, and keep your response strictly below 200 words.", userName, cards[0:2], cards[2:4], cards[4:6], userStory)
 	payload := fmt.Sprintf(`{"model": "gpt-3.5-turbo-instruct", "prompt": "%s", "max_tokens": 1000}`, prompt)
-	fmt.Println(prompt)
+	
+	// chatgpt code. maybe delete this and refer to it in a previous commit
+	// fmt.Println(prompt)
 
-	req, err := http.NewRequest("POST", "https://api.openai.com/v1/completions", strings.NewReader(payload))
-	if err != nil {
-		errors.SendInternalError(nil, fmt.Errorf("error creating request: %v", err))
-	}
+	// req, err := http.NewRequest("POST", "https://api.openai.com/v1/completions", strings.NewReader(payload))
+	// if err != nil {
+	// 	errors.SendInternalError(nil, fmt.Errorf("error creating request: %v", err))
+	// }
 
-	req.Header.Set("Authorization", "Bearer "+apiKey)
-	req.Header.Set("Content-Type", "application/json")
+	// req.Header.Set("Authorization", "Bearer "+apiKey)
+	// req.Header.Set("Content-Type", "application/json")
 
 	resp, err := client.Do(req)
 	if err != nil {
