@@ -1,48 +1,53 @@
+// app/page.tsx
 "use client";
 
 import { useState } from "react";
-import axios from "axios";
 import { useRouter } from "next/navigation";
 
-const LandingPage = () => {
+export default function HomePage() {
   const [name, setName] = useState("");
-  const [query, setQuery] = useState("");
+  const [userStory, setUserStory] = useState("");
   const router = useRouter();
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     try {
-      const response = await axios.post("/api/cards", { name, query });
-      const { requestID } = response.data;
-      router.push(`/result/${requestID}`);
+      const response = await fetch("/api/cards", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, userStory }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        router.push(`/cards/${data.requestID}`);
+      } else {
+        console.error("Failed to fetch tarot cards.");
+      }
     } catch (error) {
-      console.error("Error submitting form:", error);
+      console.error("Error:", error);
     }
   };
 
   return (
     <div>
-      <h1>Tarot Card Reading</h1>
+      <h1>Welcome to the Tarot Reading</h1>
       <form onSubmit={handleSubmit}>
-        <label>
-          Name:
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-        </label>
-        <label>
-          Query:
-          <textarea
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-          ></textarea>
-        </label>
-        <button type="submit">Get Reading</button>
+        <input
+          type="text"
+          placeholder="Your Name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          required
+        />
+        <textarea
+          placeholder="Your Story"
+          value={userStory}
+          onChange={(e) => setUserStory(e.target.value)}
+        />
+        <button type="submit">Get Your Reading</button>
       </form>
     </div>
   );
-};
-
-export default LandingPage;
+}
