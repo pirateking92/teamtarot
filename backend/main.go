@@ -1,49 +1,55 @@
 package main
 
 import (
+	"log"
 	"os"
 
-	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	"main.go/env"
-	"main.go/routes"
+	"github.com/pirateking92/teamtarot/backend/db"
+	"github.com/pirateking92/teamtarot/backend/env"
+	"github.com/pirateking92/teamtarot/backend/routes"
+	"github.com/pirateking92/teamtarot/backend/services"
+	"gorm.io/gorm"
 )
 
 func main() {
-	// gin.SetMode(gin.ReleaseMode)
+	cfg := env.Load()
 
-	// if the above line is not called in main.go the App will always run in debug mode
-	// and detailed errors will be shown to the user.
-	env.LoadEnv()
-	mode := os.Getenv("GIN_MODE")
-	if mode == "" {
-		mode = gin.ReleaseMode
+	gormDB, err := db.Connect(cfg.DatabaseURL)
+	if err != nil {
+		log.Fatalf("database connection failed: %v", err)
 	}
-	gin.SetMode(mode)
-	app := setupApp()
+	if err := db.AutoMigrate(gormDB); err != nil {
+		log.Fatalf("database migration failed: %v", err)
+	}
 
-	app.Run(":8082")
+	// Subcommands: `go run . seed` imports the 78 cards from tarotapi.dev.
+	if len(os.Args) > 1 && os.Args[1] == "seed" {
+		count, err := services.SeedCards(gormDB)
+		if err != nil {
+			log.Fatalf("seed failed: %v", err)
+		}
+		log.Printf("seeded %d cards", count)
+		return
+	}
+
+	if cfg.GinMode != "" {
+		gin.SetMode(cfg.GinMode)
+	}
+
+	app := setupApp(cfg, gormDB)
+	log.Printf("Cassandra backend listening on :%s", cfg.Port)
+	if err := app.Run(":" + cfg.Port); err != nil {
+		log.Fatalf("server error: %v", err)
+	}
 }
 
-func setupApp() *gin.Engine {
+func setupApp(cfg env.Config, gormDB *gorm.DB) *gin.Engine {
 	app := gin.Default()
-	setupCORS(app)
-	routes.SetupRoutes(app)
+	// No CORS middleware: this API is an internal service behind the SvelteKit
+	// BFF. The browser never calls it directly — only the SvelteKit server does
+	// (server-to-server), so a browser CORS gate is unnecessary and would wrongly
+	// reject those calls based on their Origin. Do not expose this API publicly.
+	routes.SetupRoutes(app, gormDB, cfg)
 	return app
-}
-
-func setupCORS(app *gin.Engine) {
-	config := cors.DefaultConfig()
-	config.AllowAllOrigins = true
-	config.AllowCredentials = true
-	config.AllowHeaders = []string{"Origin",
-		"X-Requested-With",
-		"Content-Type",
-		"Accept",
-		"x-api-key",         // Allow custom header for Anthropics API
-		"anthropic-version", // Custom header for Anthropics
-		"Authorization",     // Header for OpenAI API key
-	}
-
-	app.Use(cors.New(config))
 }

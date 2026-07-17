@@ -2,3 +2,132 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+	:root {
+		color-scheme: dark;
+	}
+
+	html {
+		min-height: 100%;
+		background-color: #0a0402;
+		background-size: cover;
+		background-position: center;
+		background-repeat: no-repeat;
+		background-attachment: fixed;
+	}
+
+	body {
+		margin: 0;
+		min-height: 100vh;
+		font-family: 'MedievalSharp', Arial, Helvetica, sans-serif;
+		color: rgb(197, 176, 176);
+	}
+
+	/* Full-viewport background layer behind all content. */
+	.scene {
+		position: fixed;
+		inset: 0;
+		z-index: -1;
+		background-size: cover;
+		background-position: center;
+		background-repeat: no-repeat;
+	}
+
+	/* Staged background scenes reinforce the narrative progression. */
+	.scene-town {
+		background-image: linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.55)),
+			url('/bg/0-town.jpeg');
+	}
+	.scene-alley {
+		background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6)), url('/bg/1-alley.png');
+	}
+	.scene-parlor {
+		background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6)),
+			url('/bg/2-parlor.png');
+	}
+}
+
+@layer components {
+	/* The ornate maroon panel with an ember glow, used across every page. */
+	.panel {
+		background: linear-gradient(to right, rgba(0, 0, 0, 0.9), rgba(19, 5, 0, 0.9));
+		box-shadow: 0 0 1em 4px rgba(207, 49, 5, 0.5);
+		border-radius: 2rem;
+	}
+
+	.input-field {
+		background: linear-gradient(to right, rgba(0, 0, 0, 0.7), rgba(19, 5, 0, 0.7));
+		box-shadow: 0 0 1em 4px rgba(149, 35, 4, 0.5);
+		border-radius: 1rem;
+		border: 2px solid #200505;
+		padding: 0.6em 0.9em;
+		color: rgb(197, 176, 176);
+		outline: none;
+		text-align: center;
+		font-family: inherit;
+		font-size: 1.1rem;
+	}
+	.input-field::placeholder {
+		color: rgba(197, 176, 176, 0.55);
+	}
+	.input-field:focus {
+		box-shadow: 0 0 1.2em 5px rgba(207, 49, 5, 0.6);
+	}
+
+	/* The ornate animated button from the original design, extracted once. */
+	.ornate-button {
+		position: relative;
+		display: inline-block;
+		background: #200505;
+		color: rgb(197, 176, 176);
+		text-decoration: none;
+		text-transform: uppercase;
+		border: none;
+		border-radius: 1rem;
+		padding: 0.7em 1.6em;
+		font-family: inherit;
+		font-size: 1.1rem;
+		letter-spacing: 0.1em;
+		cursor: pointer;
+		transition:
+			letter-spacing 0.3s ease,
+			box-shadow 0.3s ease;
+		box-shadow: 0 0 1em 2px rgba(207, 49, 5, 0.35);
+	}
+	.ornate-button:hover:not(:disabled) {
+		letter-spacing: 0.28em;
+		box-shadow: 0 0 1.4em 6px rgba(207, 49, 5, 0.6);
+	}
+	.ornate-button:disabled {
+		opacity: 0.5;
+		cursor: not-allowed;
+	}
+
+	/* 3D card flip primitives (single, de-nested transform). */
+	.flip-card {
+		perspective: 1000px;
+		background: transparent;
+	}
+	.flip-card-inner {
+		position: relative;
+		width: 100%;
+		height: 100%;
+		transition: transform 0.5s;
+		transform-style: preserve-3d;
+	}
+	.flip-card.is-flipped .flip-card-inner {
+		transform: rotateY(180deg);
+	}
+	.flip-face {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		backface-visibility: hidden;
+		border-radius: 0.75rem;
+		overflow: hidden;
+	}
+	.flip-face-back {
+		transform: rotateY(180deg);
+	}
+}

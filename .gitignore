@@ -1,0 +1,26 @@
+# macOS
+.DS_Store
+
+# Env / secrets
+.env
+*.env
+!.test.env
+
+# Go
+backend/tmp/
+backend/main
+*.test
+backend/build-errors.log
+
+# Node / SvelteKit
+node_modules/
+frontend/.svelte-kit/
+frontend/build/
+frontend/.vercel/
+frontend/.output/
+frontend/dist/
+
+# Editor / OS cruft
+*.log
+.idea/
+.vscode/

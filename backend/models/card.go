@@ -1,11 +1,15 @@
 package models
 
+// Card is one of the 78 tarot cards, seeded once from tarotapi.dev into Postgres.
+// JSON tags define the shape returned to the frontend (camelCase / clean names).
 type Card struct {
-	CardName       string `json:"name"`
-	Type           string `json:"type"`
-	MeaningUp      string `json:"meaning_up"`
-	MeaningReverse string `json:"meaning_rev"`
-	Description    string `json:"desc"`
-	ShortName      string `json:"name_short"`
-	Reversed       bool   `json:"reversed"`
+	ID             uint   `gorm:"primaryKey" json:"id"`
+	Name           string `json:"name"`
+	NameShort      string `gorm:"uniqueIndex;size:16" json:"nameShort"`
+	Arcana         string `gorm:"size:8" json:"arcana"` // "major" | "minor"
+	Suit           string `gorm:"size:16" json:"suit"`  // wands|cups|swords|pentacles, or "" for major arcana
+	MeaningUp      string `gorm:"type:text" json:"meaningUp"`
+	MeaningReverse string `gorm:"type:text" json:"meaningReverse"`
+	Description    string `gorm:"type:text" json:"description"`
+	ImageFileName  string `json:"imageFileName"` // "<nameShort>.jpg"
 }

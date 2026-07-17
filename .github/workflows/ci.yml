@@ -3,31 +3,62 @@ name: Continuous Integration
 on:
   push:
     branches:
-      - main  
+      - main
   pull_request:
     branches:
-      - main 
+      - main
 
 jobs:
-  build:
-  
+  backend:
+    name: Backend (Go)
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
       - name: Set up Go
-        uses: actions/setup-go@v4
+        uses: actions/setup-go@v5
         with:
-          go-version: '1.21.2'
+          go-version: '1.24'
           cache-dependency-path: backend/go.sum
 
+      - name: Build
+        working-directory: backend
+        run: go build ./...
+
+      - name: Vet
+        working-directory: backend
+        run: go vet ./...
+
+      # Tests use an in-memory SQLite DB (needs CGO), so no Postgres service is required.
+      - name: Test
+        working-directory: backend
+        env:
+          CGO_ENABLED: '1'
+        run: go test ./...
+
+  frontend:
+    name: Frontend (SvelteKit)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
       - name: Install Dependencies
-        working-directory: backend
-        run: go get .
+        working-directory: frontend
+        run: npm ci
 
-      - name: Run Tests
-        working-directory: backend
-        run: go test
+      - name: Type Check
+        working-directory: frontend
+        run: npm run check
 
+      - name: Build
+        working-directory: frontend
+        run: npm run build
